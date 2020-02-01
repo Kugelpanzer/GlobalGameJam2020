@@ -6,18 +6,18 @@ public class Tile : BaseObject
 {
 
 
-    public TileType type
-    {
+    public TileType type;
+    /*{
         get { return type; }   // get method
         set {
             if (this.type != value)
             {
-                UpdateSprite((WallType)value);
+                //UpdateSprite((WallType)value);
                 this.type = value;
             }
 
         }  // set method
-    }
+    }*/
 
 
     public override bool Equals(object other)
@@ -33,7 +33,7 @@ public class Tile : BaseObject
     // Start is called before the first frame update
     void Start()
     {
-        
+        base.Start();
     }
 
     // Update is called once per frame

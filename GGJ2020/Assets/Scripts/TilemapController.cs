@@ -5,14 +5,15 @@ using UnityEngine.Tilemaps;
 
 public class TilemapController : MonoBehaviour
 {
-
-    public Tilemap levelLayout;
-    public List<TileInfo> ti = new List<TileInfo>();
+    public GameObject mapLayout;
+    Tilemap levelLayout;
+    List<TileInfo> ti = new List<TileInfo>();
+    public GameObject tileAsset; //list that contains one of every tile asset
 
     [System.Serializable]
     public struct SprToType
     {
-        public string spr;
+        public Sprite spr;
         public TileType type;
     }
     public SprToType[] sprToType;
@@ -39,21 +40,40 @@ public class TilemapController : MonoBehaviour
                 if (levelLayout.HasTile(new Vector3Int(j,i,0)))
                 {
                     TileType t = strType[levelLayout.GetSprite(new Vector3Int(j, i, 0)).name];
+
+                   /* Debug.Log(levelLayout.GetSprite(new Vector3Int(j, i, 0)).name);
+                    Debug.Log(j);
+                    Debug.Log(i);*/
                     ti.Add(new TileInfo(j, i, t));
                 }
             }
     }
+
+    private void GenerateMap()
+    {
+        for(int i=0;i<ti.Count; i++)
+        {
+            GameObject gj = Instantiate(tileAsset);
+            Tile b = gj.GetComponent<Tile>();
+            b.x = ti[i].x;
+            b.y = ti[i].y;
+            b.type = ti[i].type;
+        }
+    }
+
     // Start is called before the first frame update
     void Awake()
     {
+        levelLayout = mapLayout.GetComponentInChildren<Tilemap>();
         for(int i=0; i < sprToType.Length; i++)
         {
-            strType.Add(sprToType[i].spr, sprToType[i].type);
+            strType.Add(sprToType[i].spr.name, sprToType[i].type);
         }
     }
     private void Start()
     {
         GetAllTiles();
+        GenerateMap();
     }
 
     // Update is called once per frame
