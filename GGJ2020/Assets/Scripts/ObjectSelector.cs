@@ -7,12 +7,14 @@ public class ObjectSelector : MonoBehaviour
 
     public GameObject selectedTile;
 
-    public BaseObject checkingObject;
-    public int allowedAsset;
+    public ColliderCollorScript checkingObject;
+    public int allowedAsset=1;
 
     Vector3 mousePos;
     Vector2 mousePos2D;
     RaycastHit2D hit;
+
+    
 
 
     // Start is called before the first frame update
@@ -46,11 +48,18 @@ public class ObjectSelector : MonoBehaviour
         if (hit.collider != null)
         {
 
-            if (hit.collider.gameObject.GetComponent<BaseObject>() != null)
+            if (hit.collider.gameObject.GetComponent<ColliderCollorScript>() != null)
             {
                 //if(check color)
-                checkingObject.ChangeColliderColor();
+                checkingObject = hit.collider.gameObject.GetComponent<ColliderCollorScript>();
+                checkingObject.ChangeColliderColor(allowedAsset);
             }
+        }
+        else
+        {
+           /* if (checkingObject != null)
+                checkingObject.GetComponent<ColliderCollorScript>().ResetColor();*/
+            checkingObject = null;
         }
     }
 
