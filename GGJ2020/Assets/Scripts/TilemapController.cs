@@ -9,6 +9,7 @@ public class TilemapController : MonoBehaviour
     Tilemap levelLayout;
     List<TileInfo> ti = new List<TileInfo>();
     public GameObject tileAsset; //list that contains one of every tile asset
+    public GameObject wallAsset;
 
     [System.Serializable]
     public struct SprToType
@@ -58,6 +59,7 @@ public class TilemapController : MonoBehaviour
             b.x = ti[i].x;
             b.y = ti[i].y;
             b.type = ti[i].type;
+            GetComponent<Board>().CreateTile(b);
         }
     }
 

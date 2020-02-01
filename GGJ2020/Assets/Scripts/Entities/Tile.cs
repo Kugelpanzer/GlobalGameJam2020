@@ -28,7 +28,7 @@ public class Tile : BaseObject
         this.type = tileType;
     }
 
-    void UpdateSprite()
+    public void UpdateSprite()
     {
         GetComponent<SpriteRenderer>().sprite=controller.GetComponent<SpriteScript>().typeSpr[type];
     }

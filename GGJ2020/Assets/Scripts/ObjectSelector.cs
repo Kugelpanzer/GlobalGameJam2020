@@ -34,7 +34,10 @@ public class ObjectSelector : MonoBehaviour
             hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
             if (hit.collider != null)
             {
-               selectedTile=hit.collider.gameObject;
+               selectedTile=hit.collider.gameObject.transform.parent.gameObject;
+                Debug.Log(selectedTile);
+                Tile tile = selectedTile.GetComponent<Tile>();
+                GetComponent<PlayMove>().SetTile(tile.x, tile.y);
             }
         }
 
@@ -53,6 +56,7 @@ public class ObjectSelector : MonoBehaviour
                 //if(check color)
                 checkingObject = hit.collider.gameObject.GetComponent<ColliderCollorScript>();
                 checkingObject.ChangeColliderColor(allowedAsset);
+
             }
         }
         else

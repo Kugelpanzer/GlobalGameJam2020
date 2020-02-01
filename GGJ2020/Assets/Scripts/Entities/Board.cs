@@ -10,6 +10,12 @@ public class Board : MonoBehaviour
     List<Tile> surroundedGooTiles = new List<Tile>();
     List<Tile> notSurroundedGooTiles = new List<Tile>();
 
+
+    public void CreateTile(Tile t)
+    {
+        tiles.Add(t);
+    }
+
     public Board ()
     {
         tiles.Clear();
@@ -30,12 +36,12 @@ public class Board : MonoBehaviour
         if (tileType == TileType.Goo) RecalculateSurroundedTiles();
     }
 
-    private void RemoveTile(int x, int y)
+   /* private void RemoveTile(int x, int y)
     {
         Tile tileToRemove = GetTile(x, y);
         tiles.RemoveAll(tile => tile.x == x && tile.y == y);
         Destroy(tileToRemove.gameObject);
-    }
+    }*/
 
     public Tile GetTile (int x, int y)
     {

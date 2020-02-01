@@ -49,16 +49,16 @@ public class ColliderCollorScript : MonoBehaviour
         spr = GetComponent<SpriteRenderer>();
         spr.color = defaultColor;
 
-        for(int i = 0; i < transform.childCount; i++)
+        /*for(int i = 0; i < transform.childCount; i++)
         {
             childrenList.Add(transform.GetChild(i));
-        }
+        }*/
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (controller.GetComponent<ObjectSelector>().checkingObject == this)
+        if (controller.GetComponent<ObjectSelector>().checkingObject != this)
             ResetColor();
     }
 }
