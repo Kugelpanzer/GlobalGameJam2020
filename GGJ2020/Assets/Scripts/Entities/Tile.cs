@@ -29,18 +29,4 @@ public class Tile : BaseObject
     {
         
     }
-
-    public static bool areTilesAdjacent (Tile tile1, Tile tile2)
-    {
-        // horizontal
-        if (tile1.x == tile2.x && tile1.y == tile2.y + 1) return true;
-        if (tile1.x == tile2.x && tile1.y == tile2.y - 1) return true;
-        // slash
-        if (tile1.x == tile2.x + 1 && tile1.y == tile2.y) return true;
-        if (tile1.x == tile2.x - 1 && tile1.y == tile2.y) return true;
-        // backslash
-        if (tile1.x == tile2.x - 1 && tile1.y == tile2.y + 1) return true;
-        if (tile1.x == tile2.x + 1 && tile1.y == tile2.y - 1) return true;
-        return false;
-    }
 }
