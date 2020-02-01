@@ -211,7 +211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapLayout: {fileID: 2795593603755644163, guid: 4192d389afc1df2458c7fac3bcf255da,
     type: 3}
-  tileAsset: {fileID: 4165831411319536838, guid: 3950e35a5b1ec274b81d8efb27042ebb,
+  tileAsset: {fileID: 5112987667100042660, guid: 3950e35a5b1ec274b81d8efb27042ebb,
     type: 3}
   wallAsset: {fileID: 8693131403770888073, guid: 47313c012b2fb224088593e22a55a3f2,
     type: 3}

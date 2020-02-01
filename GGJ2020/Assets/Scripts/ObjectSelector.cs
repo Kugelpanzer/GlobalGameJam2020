@@ -34,10 +34,15 @@ public class ObjectSelector : MonoBehaviour
             hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
             if (hit.collider != null)
             {
-               selectedTile=hit.collider.gameObject.transform.parent.gameObject;
-                Debug.Log(selectedTile);
-                Tile tile = selectedTile.GetComponent<Tile>();
-                GetComponent<PlayMove>().SetTile(tile.x, tile.y);
+
+                selectedTile = hit.collider.gameObject.transform.parent.gameObject;
+                if (hit.collider.gameObject.transform.parent.gameObject.GetComponent<Tile>() != null)
+                {
+                    Debug.Log(selectedTile);
+                    Tile tile = selectedTile.GetComponent<Tile>();
+                    GetComponent<PlayMove>().SetTile(tile.x, tile.y);
+                }
+
             }
         }
 
