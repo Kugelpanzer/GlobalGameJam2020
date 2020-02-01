@@ -2,28 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tile : BaseObject
+public class Tile : MonoBehaviour
 {
+    public int x, y;
 
-
-    public TileType type;
-    /*{
-        get { return type; }   // get method
+    public TileType type
+    {
+        get { return type; }
         set {
             if (this.type != value)
             {
-                //UpdateSprite((WallType)value);
+                UpdateSprite((WallType)value);
                 this.type = value;
             }
+        }
+    }
 
-        }  // set method
-    }*/
-
-
-    public override bool Equals(object other)
+    public Tile (int x, int y, TileType tileType)
     {
-        Tile otherTile = (Tile)other;
-        return (this.x == otherTile.x) && (this.y == otherTile.y) && (this.type == otherTile.type);
+        this.x = x;
+        this.y = y;
+        this.type = tileType;
     }
 
     void UpdateSprite(WallType type)
@@ -33,7 +32,7 @@ public class Tile : BaseObject
     // Start is called before the first frame update
     void Start()
     {
-        base.Start();
+        
     }
 
     // Update is called once per frame
