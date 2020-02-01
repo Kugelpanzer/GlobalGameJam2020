@@ -7,6 +7,8 @@ public class Tile : BaseObject
 
     public TileType type;
 
+    GameObject controller;
+
     public Tile (int x, int y, TileType tileType)
     {
         this.x = x;
@@ -22,6 +24,7 @@ public class Tile : BaseObject
     void Start()
     {
         base.Start();
+        controller = GameObject.Find("Controller");
     }
 
     // Update is called once per frame
