@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 1009044677}
   - component: {fileID: 1009044676}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: MainGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -212,7 +212,7 @@ Grid:
   m_Enabled: 1
   m_CellSize: {x: 1, y: 1, z: 0}
   m_CellGap: {x: 0, y: 0, z: 0}
-  m_CellLayout: 0
+  m_CellLayout: 1
   m_CellSwizzle: 0
 --- !u!4 &1009044677
 Transform:
