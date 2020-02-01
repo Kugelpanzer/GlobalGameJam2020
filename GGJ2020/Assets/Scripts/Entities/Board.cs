@@ -33,6 +33,7 @@ public class Board : MonoBehaviour
         Tile tile = tiles.Find(existingTile => existingTile.x == x && existingTile.y == y);
         if (tile == null) return;
         tile.type = tileType;
+        tile.UpdateSprite();
         if (tileType == TileType.Goo) RecalculateSurroundedTiles();
     }
 
@@ -62,6 +63,19 @@ public class Board : MonoBehaviour
         Tile tile = GetTile(x, y);
         if (tile != null) return tile.type;
         return TileType.Mountain;
+    }
+
+    public bool TileHasLeftTile (int x, int y)
+    {
+        return HasTile(x - 1, y);
+    }
+    public bool TileHasBottomLeftTile(int x, int y)
+    {
+        return HasTile(x, y - 1);
+    }
+    public bool TileHasBottomRightTile(int x, int y)
+    {
+        return HasTile(x + 1, y - 1);
     }
 
     private bool TileHasRightWall (int x, int y)
@@ -283,5 +297,51 @@ public class Board : MonoBehaviour
 
         // any other case -> not playable
         return false;
+    }
+
+    private bool ExpandGoo()
+    {
+        List<Tile> gooTiles = GooTilesThatCanExpand();
+        if (gooTiles.Count == 0) return false;
+        System.Random random = new System.Random();
+        int index = random.Next(gooTiles.Count);
+        Tile tile = gooTiles[index];
+        List<Tile> possibleTiles = TilesGooCanSpread(tile.x, tile.y);
+        return false;
+    }
+    private List<Tile> GooTilesThatCanExpand ()
+    {
+        List<Tile> returnValue = new List<Tile>();
+        foreach (Tile gooTile in notSurroundedGooTiles)
+        {
+            if (NumberOfTilesGooCanSpread(gooTile.x, gooTile.y) >= 2) returnValue.Add(gooTile);
+        }
+        if (returnValue.Count > 0) return returnValue;
+        foreach (Tile gooTile in notSurroundedGooTiles)
+        {
+            if (NumberOfTilesGooCanSpread(gooTile.x, gooTile.y) >= 1) returnValue.Add(gooTile);
+        }
+        return returnValue;
+    }
+
+    private int NumberOfTilesGooCanSpread(int x, int y)
+    {
+        return TilesGooCanSpread(x, y).Count;
+    }
+
+    private List<Tile> TilesGooCanSpread (int x, int y)
+    {
+        Tile gooTile = notSurroundedGooTiles.Find(tile => tile.x == x && tile.y == y);
+        if (gooTile == null) return null;
+        List<Tile> tiles = new List<Tile>();
+        {
+            if (TileHasLeftWall(x, y) && HasTile(x - 1, y) && GetTileTypeOnPosition(x - 1, y) == TileType.Waste) tiles.Add(GetTile(x - 1, y));
+            if (TileHasTopLeftWall(x, y) && HasTile(x - 1, y + 1) && GetTileTypeOnPosition(x - 1, y + 1) == TileType.Waste) tiles.Add(GetTile(x - 1, y + 1));
+            if (TileHasTopRightWall(x, y) && HasTile(x, y + 1) && GetTileTypeOnPosition(x, y + 1) == TileType.Waste) tiles.Add(GetTile(x, y + 1));
+            if (TileHasRightWall(x, y) && HasTile(x + 1, y) && GetTileTypeOnPosition(x + 1, y) == TileType.Waste) tiles.Add(GetTile(x + 1, y));
+            if (TileHasBottomRightWall(x, y) && HasTile(x + 1, y - 1) && GetTileTypeOnPosition(x + 1, y - 1) == TileType.Waste) tiles.Add(GetTile(x + 1, y - 1));
+            if (TileHasBottomLeftWall(x, y) && HasTile(x, y - 1) && GetTileTypeOnPosition(x, y - 1) == TileType.Waste) tiles.Add(GetTile(x, y - 1));
+        }
+        return tiles;
     }
 }
