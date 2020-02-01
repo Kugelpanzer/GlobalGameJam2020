@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class Board
+public class Board : MonoBehaviour
 {
     List<Tile> tiles = new List<Tile>();
     List<Wall> walls = new List<Wall>();
+
+    List<Tile> surroundedGooTiles = new List<Tile>();
+    List<Tile> notSurroundedGooTiles = new List<Tile>();
 
     public Board ()
     {
@@ -12,16 +16,25 @@ public class Board
         walls.Clear();
     }
 
-    public void AddTile (Tile tile)
+    public void AddWall (Wall wall)
     {
-        RemoveTile(tile.x, tile.y);
-        tiles.Add(tile);
-        // update sprite
+        walls.Add(wall);
+        RecalculateSurroundedTiles();
+    }
+
+    public void ChangeTileType (int x, int y, TileType tileType)
+    {
+        Tile tile = tiles.Find(existingTile => existingTile.x == x && existingTile.y == y);
+        if (tile == null) return;
+        tile.type = tileType;
+        if (tileType == TileType.Goo) RecalculateSurroundedTiles();
     }
 
     private void RemoveTile(int x, int y)
     {
+        Tile tileToRemove = GetTile(x, y);
         tiles.RemoveAll(tile => tile.x == x && tile.y == y);
+        Destroy(tileToRemove.gameObject);
     }
 
     public Tile GetTile (int x, int y)
@@ -72,19 +85,49 @@ public class Board
         return TileHasBottomRightWall(x - 1, y + 1);
     }
 
+    private void RecalculateSurroundedTiles ()
+    {
+        surroundedGooTiles.Clear();
+        notSurroundedGooTiles.Clear();
+        foreach (Tile tile in tiles)
+        {
+            TileIsGooThatIsSurrounded(tile.x, tile.y);
+        }
+    }
+
     public bool TileIsGooThatIsSurrounded (int x, int y)
     {
         Tile tile = GetTile(x, y);
         if (tile == null) return false;
         if (tile.type != TileType.Goo) return false;
         List<Tile> checkedTiles = new List<Tile>();
-        return TileIsGooThatIsSurrounded(x, y, checkedTiles);
+        List<Tile> returnedTiles = new List<Tile>();
+        bool surrounded = TileIsGooThatIsSurrounded(x, y, checkedTiles, ref returnedTiles);
+        if (surrounded)
+        {
+            foreach (Tile returnedTile in returnedTiles)
+            {
+                if (!surroundedGooTiles.Find(surroundedTile => surroundedTile.x == returnedTile.x && surroundedTile.y == returnedTile.y)) surroundedGooTiles.Add(returnedTile);
+            }
+        }
+        else
+        {
+            foreach (Tile returnedTile in returnedTiles)
+            {
+                if (!notSurroundedGooTiles.Find(notSurroundedTile => notSurroundedTile.x == returnedTile.x && notSurroundedTile.y == returnedTile.y)) notSurroundedGooTiles.Add(returnedTile);
+            }
+        }
+        return surrounded;
     }
 
-    private bool TileIsGooThatIsSurrounded (int x, int y, List<Tile> checkedTiles)
+    private bool TileIsGooThatIsSurrounded (int x, int y, List<Tile> checkedTiles, ref List<Tile> surroundedTiles)
     {
         // if tile is already checked goo tile
         if (checkedTiles.Find(checkedTile => checkedTile.x == x && checkedTile.y == y) != null) return true;
+        // if tile is already surely surrounded tile
+        if (surroundedGooTiles.Find(surroundedTile => surroundedTile.x == x && surroundedTile.y == y)) return true;
+        // if tile is already surely not a surrounded tile
+        if (notSurroundedGooTiles.Find(notSurroundedTile => notSurroundedTile.x == x && notSurroundedTile.y == y)) return false;
 
         Tile tile = GetTile(x, y);
 
@@ -97,33 +140,34 @@ public class Board
             if (!TileHasLeftWall(x, y))
             {
                 checkedTiles.Add(tile);
-                if (!TileIsGooThatIsSurrounded(x - 1, y, checkedTiles)) return false;
+                if (!TileIsGooThatIsSurrounded(x - 1, y, checkedTiles, ref surroundedTiles)) return false;
             }
             if (!TileHasTopLeftWall(x, y))
             {
                 checkedTiles.Add(tile);
-                if (!TileIsGooThatIsSurrounded(x - 1, y + 1, checkedTiles)) return false;
+                if (!TileIsGooThatIsSurrounded(x - 1, y + 1, checkedTiles, ref surroundedTiles)) return false;
             }
             if (!TileHasTopRightWall(x, y))
             {
                 checkedTiles.Add(tile);
-                if (!TileIsGooThatIsSurrounded(x, y + 1, checkedTiles)) return false;
+                if (!TileIsGooThatIsSurrounded(x, y + 1, checkedTiles, ref surroundedTiles)) return false;
             }
             if (!TileHasRightWall(x, y))
             {
                 checkedTiles.Add(tile);
-                if (!TileIsGooThatIsSurrounded(x + 1, y, checkedTiles)) return false;
+                if (!TileIsGooThatIsSurrounded(x + 1, y, checkedTiles, ref surroundedTiles)) return false;
             }
             if (!TileHasBottomRightWall(x, y))
             {
                 checkedTiles.Add(tile);
-                if (!TileIsGooThatIsSurrounded(x + 1, y - 1, checkedTiles)) return false;
+                if (!TileIsGooThatIsSurrounded(x + 1, y - 1, checkedTiles, ref surroundedTiles)) return false;
             }
             if (!TileHasBottomLeftWall(x, y))
             {
                 checkedTiles.Add(tile);
-                if (!TileIsGooThatIsSurrounded(x, y - 1, checkedTiles)) return false;
+                if (!TileIsGooThatIsSurrounded(x, y - 1, checkedTiles, ref surroundedTiles)) return false;
             }
+            if (!surroundedTiles.Find(surroundedTile => surroundedTile.x == x && surroundedTile.y == y)) surroundedTiles.Add(tile);
         }
         return true;
     }
