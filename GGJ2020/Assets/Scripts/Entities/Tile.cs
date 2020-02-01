@@ -6,17 +6,7 @@ public class Tile : MonoBehaviour
 {
     public int x, y;
 
-    public TileType type
-    {
-        get { return type; }
-        set {
-            if (this.type != value)
-            {
-                UpdateSprite((WallType)value);
-                this.type = value;
-            }
-        }
-    }
+    public TileType type;
 
     public Tile (int x, int y, TileType tileType)
     {
@@ -39,5 +29,19 @@ public class Tile : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public static bool areTilesAdjacent (Tile tile1, Tile tile2)
+    {
+        // horizontal
+        if (tile1.x == tile2.x && tile1.y == tile2.y + 1) return true;
+        if (tile1.x == tile2.x && tile1.y == tile2.y - 1) return true;
+        // slash
+        if (tile1.x == tile2.x + 1 && tile1.y == tile2.y) return true;
+        if (tile1.x == tile2.x - 1 && tile1.y == tile2.y) return true;
+        // backslash
+        if (tile1.x == tile2.x - 1 && tile1.y == tile2.y + 1) return true;
+        if (tile1.x == tile2.x + 1 && tile1.y == tile2.y - 1) return true;
+        return false;
     }
 }

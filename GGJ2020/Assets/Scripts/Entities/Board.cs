@@ -24,6 +24,15 @@ public class Board
         tiles.RemoveAll(tile => tile.x == x && tile.y == y);
     }
 
+    public Tile GetTile (int x, int y)
+    {
+        return tiles.Find(tile => tile.x == x && tile.y == y);
+    }
+    public bool hasTile (int x, int y)
+    {
+        return GetTile(x, y) != null;
+    }
+
     public bool tileAllowed (GameMode gameMode, Tile tile)
     {
         if (gameMode == GameMode.Edit) return true;
@@ -34,10 +43,55 @@ public class Board
 
     private TileType getTileTypeOnPosition (int x, int y)
     {
-        foreach (Tile tile in tiles)
-        {
-            if (tile.x == x && tile.y == y) return tile.type;
-        }
+        Tile tile = GetTile(x, y);
+        if (tile != null) return tile.type;
         return TileType.Mountain;
+    }
+
+    public bool isNatureTilePlayable (int x, int y)
+    {
+        return (tiles.Find(tile => tile.x == x && tile.y == y)).type == TileType.Waste;
+    }
+
+    public bool isNatureWallPlayable (int x, int y, WallType wallType)
+    {
+        // \ walls
+        if (wallType == WallType.Backslash)
+        {
+            // edge of screen is not playable
+            if (!hasTile(x, y) || !hasTile(x, y + 1)) return false;
+            // adjacent tiles
+            if (getTileTypeOnPosition(x, y) == TileType.Nature) return true;
+            if (getTileTypeOnPosition(x, y + 1) == TileType.Nature) return true;
+            // tiles adjacent to end of wall
+            if (hasTile(x - 1, y + 1) && getTileTypeOnPosition(x - 1, y + 1) == TileType.Nature) return true;
+            if (hasTile(x + 1, y) && getTileTypeOnPosition(x + 1, y) == TileType.Nature) return true;
+        }
+        // | walls
+        if (wallType == WallType.Backslash)
+        {
+            // edge of screen is not playable
+            if (!hasTile(x, y) || !hasTile(x + 1, y)) return false;
+            // adjacent tiles
+            if (getTileTypeOnPosition(x, y) == TileType.Nature) return true;
+            if (getTileTypeOnPosition(x + 1, y) == TileType.Nature) return true;
+            // tiles adjacent to end of wall
+            if (hasTile(x, y + 1) && getTileTypeOnPosition(x, y + 1) == TileType.Nature) return true;
+            if (hasTile(x + 1, y - 1) && getTileTypeOnPosition(x + 1, y - 1) == TileType.Nature) return true;
+        }
+        // / walls
+        if (wallType == WallType.Backslash)
+        {
+            // edge of screen is not playable
+            if (!hasTile(x, y) || !hasTile(x + 1, y - 1)) return false;
+            // adjacent tiles
+            if (getTileTypeOnPosition(x, y) == TileType.Nature) return true;
+            if (getTileTypeOnPosition(x + 1, y - 1) == TileType.Nature) return true;
+            // tiles adjacent to end of wall
+            if (hasTile(x + 1, y) && getTileTypeOnPosition(x + 1, y) == TileType.Nature) return true;
+            if (hasTile(x, y - 1) && getTileTypeOnPosition(x, y - 1) == TileType.Nature) return true;
+        }
+        // TODO
+        return false;
     }
 }
