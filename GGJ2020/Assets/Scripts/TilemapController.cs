@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wall : BaseObject
+public class TilemapController : MonoBehaviour
 {
-
-
-    public WallType type;
     // Start is called before the first frame update
     void Start()
     {
