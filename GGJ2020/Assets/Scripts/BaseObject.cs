@@ -29,6 +29,7 @@ public class BaseObject : MonoBehaviour
     void Start()
     {
         objectSpr = GetComponent<SpriteRenderer>();
+        SetOnMap();
     }
 
     // Update is called once per frame
