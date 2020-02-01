@@ -40,6 +40,11 @@ public class BaseObject : MonoBehaviour
         SetOnMap();
     }
 
+    public void ChangeColliderColor()
+    {
+
+    }
+
     // Update is called once per frame
     void Update()
     {
