@@ -8,7 +8,7 @@ public class BaseObject : MonoBehaviour
     public int x, y;
 
     protected SpriteRenderer objectSpr;
-    GameObject controller;
+    protected GameObject controller;
     public Grid gridMap;
 
     public void SetOnMap()
