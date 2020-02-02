@@ -299,6 +299,25 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    public bool ExecuteGooMove()
+    {
+        System.Random random = new System.Random();
+        if (random.Next(6) == 0)
+        {
+            bool jumped = JumpGoo();
+            if (jumped) return true;
+            bool expanded = ExpandGoo();
+            if (expanded) return true;
+        }
+        else
+        {
+            bool expanded = ExpandGoo();
+            if (expanded) return true;
+            bool jumped = JumpGoo();
+            if (jumped) return true;
+        }
+        return false;
+    }
     private bool ExpandGoo()
     {
         List<Tile> gooTiles = GooTilesThatCanExpand();
@@ -307,8 +326,30 @@ public class Board : MonoBehaviour
         int index = random.Next(gooTiles.Count);
         Tile tile = gooTiles[index];
         List<Tile> possibleTiles = TilesGooCanSpread(tile.x, tile.y);
-        return false;
+        if ((possibleTiles.Count) <= 2) ChangeTileType(possibleTiles[0].x, possibleTiles[0].y, TileType.Goo);
+        if ((possibleTiles.Count) == 2) ChangeTileType(possibleTiles[1].x, possibleTiles[1].y, TileType.Goo);
+        int index1 = random.Next(possibleTiles.Count);
+        int index2 = -1;
+        do
+        {
+            index2 = random.Next(possibleTiles.Count);
+        }
+        while (index1 == index2);
+        ChangeTileType(possibleTiles[index1].x, possibleTiles[index1].y, TileType.Goo);
+        ChangeTileType(possibleTiles[index2].x, possibleTiles[index2].y, TileType.Goo);
+        return true;
     }
+
+    private bool JumpGoo()
+    {
+        List<Tile> possibleTiles = TilesThatGooCanJumpTo();
+        if (possibleTiles.Count == 0) return false;
+        System.Random random = new System.Random();
+        int index = random.Next(possibleTiles.Count);
+        ChangeTileType(possibleTiles[index].x, possibleTiles[index].y, TileType.Goo);
+        return true;
+    }
+
     private List<Tile> GooTilesThatCanExpand ()
     {
         List<Tile> returnValue = new List<Tile>();
@@ -320,6 +361,18 @@ public class Board : MonoBehaviour
         foreach (Tile gooTile in notSurroundedGooTiles)
         {
             if (NumberOfTilesGooCanSpread(gooTile.x, gooTile.y) >= 1) returnValue.Add(gooTile);
+        }
+        return returnValue;
+    }
+
+    private List<Tile> TilesThatGooCanJumpTo ()
+    {
+        List<Tile> returnValue = new List<Tile>();
+        foreach (Tile gooTile in notSurroundedGooTiles)
+        {
+            List<Tile> canJumpToTiles = TilesGooCanJump(gooTile.x, gooTile.y);
+            foreach (Tile canJumpToTile in canJumpToTiles)
+            if (!returnValue.Find(tile => tile.x == canJumpToTile.x && tile.y == canJumpToTile.y)) returnValue.Add(canJumpToTile);
         }
         return returnValue;
     }
@@ -341,6 +394,22 @@ public class Board : MonoBehaviour
             if (TileHasRightWall(x, y) && HasTile(x + 1, y) && GetTileTypeOnPosition(x + 1, y) == TileType.Waste) tiles.Add(GetTile(x + 1, y));
             if (TileHasBottomRightWall(x, y) && HasTile(x + 1, y - 1) && GetTileTypeOnPosition(x + 1, y - 1) == TileType.Waste) tiles.Add(GetTile(x + 1, y - 1));
             if (TileHasBottomLeftWall(x, y) && HasTile(x, y - 1) && GetTileTypeOnPosition(x, y - 1) == TileType.Waste) tiles.Add(GetTile(x, y - 1));
+        }
+        return tiles;
+    }
+
+    private List<Tile> TilesGooCanJump (int x, int y)
+    {
+        Tile gooTile = notSurroundedGooTiles.Find(tile => tile.x == x && tile.y == y);
+        if (gooTile == null) return null;
+        List<Tile> tiles = new List<Tile>();
+        {
+            if (HasTile(x - 3, y) && GetTileTypeOnPosition(x - 3, y) == TileType.Waste) tiles.Add(GetTile(x - 3, y));
+            if (HasTile(x - 3, y + 3) && GetTileTypeOnPosition(x - 3, y + 3) == TileType.Waste) tiles.Add(GetTile(x - 3, y + 3));
+            if (HasTile(x, y + 3) && GetTileTypeOnPosition(x, y + 3) == TileType.Waste) tiles.Add(GetTile(x, y + 3));
+            if (HasTile(x + 3, y) && GetTileTypeOnPosition(x + 3, y) == TileType.Waste) tiles.Add(GetTile(x + 3, y));
+            if (HasTile(x + 3, y - 3) && GetTileTypeOnPosition(x + 3, y - 3) == TileType.Waste) tiles.Add(GetTile(x + 3, y - 3));
+            if (HasTile(x, y - 3) && GetTileTypeOnPosition(x, y - 3) == TileType.Waste) tiles.Add(GetTile(x, y - 3));
         }
         return tiles;
     }

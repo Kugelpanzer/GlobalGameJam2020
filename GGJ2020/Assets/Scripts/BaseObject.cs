@@ -6,14 +6,14 @@ public class BaseObject : MonoBehaviour
 {
 
     public int x, y;
-
+    public int convX;
     protected SpriteRenderer objectSpr;
     protected GameObject controller;
     public Grid gridMap;
 
     public void SetOnMap()
     {
-       transform.position = gridMap.GetCellCenterWorld(new Vector3Int(x, y, 0));
+       transform.position = gridMap.GetCellCenterWorld(new Vector3Int(Converter.ConvX(x,y), y, 0));
        // float sizex = transform.localScale.x * objectSpr.size.x ;
        //  float sizey = transform.localScale.y * objectSpr.size.y * (0.86602540378f/2f);
        //transform.position = new Vector3(sizex * x, -sizey * y);
@@ -38,6 +38,8 @@ public class BaseObject : MonoBehaviour
         gridMap.cellSize = new Vector3(objectSpr.size.x, objectSpr.size.y, 0);
 
         SetOnMap();
+
+        convX = Converter.ConvX(x, y);
     }
 
 
