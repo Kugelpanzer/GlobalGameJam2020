@@ -10,7 +10,6 @@ public class Board : MonoBehaviour
     List<Tile> surroundedGooTiles = new List<Tile>();
     List<Tile> notSurroundedGooTiles = new List<Tile>();
 
-
     public void CreateTile(Tile t)
     {
         tiles.Add(t);
@@ -24,35 +23,9 @@ public class Board : MonoBehaviour
 
     public void AddWall (Wall wall)
     {
-      // if (wall.type == WallType.Vertical) wall.x--;
-      // if (wall.type == WallType.Backslash) wall.y--;
         walls.Add(wall);
         RecalculateSurroundedTiles();
     }
-
-   /* public void AddWall (Tile tile, WallType wallType)
-    {
-        Wall wall = new Wall();
-        if (wallType == WallType.Vertical)
-        {
-            wall.x = tile.x - 1;
-            wall.y = tile.y;
-            wall.type = wallType;
-        }
-        if (wallType == WallType.Backslash)
-        {
-            wall.x = tile.x;
-            wall.y = tile.y - 1;
-            wall.type = wallType;
-        }
-        if (wallType == WallType.Slash)
-        {
-            wall.x = tile.x;
-            wall.y = tile.y;
-            wall.type = wallType;
-        }
-        AddWall(wall);
-    }*/
 
     public void ChangeTileType (int x, int y, TileType tileType)
     {
@@ -62,13 +35,6 @@ public class Board : MonoBehaviour
         tile.UpdateSprite();
         if (tileType == TileType.Goo) RecalculateSurroundedTiles();
     }
-
-   /* private void RemoveTile(int x, int y)
-    {
-        Tile tileToRemove = GetTile(x, y);
-        tiles.RemoveAll(tile => tile.x == x && tile.y == y);
-        Destroy(tileToRemove.gameObject);
-    }*/
 
     public Tile GetTile (int x, int y)
     {
@@ -135,87 +101,43 @@ public class Board : MonoBehaviour
     {
         surroundedGooTiles.Clear();
         notSurroundedGooTiles.Clear();
-        foreach (Tile tile in tiles)
+        // TODO
+        List<Tile> gooTiles = tiles.FindAll(tile => tile.type == TileType.Goo);
+        foreach (Tile gooTile in gooTiles)
         {
-            TileIsGooThatIsSurrounded(tile.x, tile.y);
+            if (notSurroundedGooTiles.Find(tile => tile.x == gooTile.x && tile.y == gooTile.y)) continue;
+            List<Tile> escapeTiles = TilesGooCanSpread(gooTile.x, gooTile.y);
+            if (escapeTiles.Count > 0) notSurroundedGooTiles.AddRange(GetAllConnectedGooTiles(gooTile.x, gooTile.y));
+        }
+        foreach (Tile gooTile in gooTiles)
+        {
+            if (!notSurroundedGooTiles.Find(tile => tile.x == gooTile.x && tile.y == gooTile.y)) surroundedGooTiles.Add(gooTile);
         }
     }
 
-    public bool TileIsGooThatIsSurrounded (int x, int y)
+    private List<Tile> GetAllConnectedGooTiles(int x, int y)
     {
-        Tile tile = GetTile(x, y);
-        if (tile == null) return false;
-        if (tile.type != TileType.Goo) return false;
-        List<Tile> checkedTiles = new List<Tile>();
-        List<Tile> returnedTiles = new List<Tile>();
-        bool surrounded = TileIsGooThatIsSurrounded(x, y, checkedTiles, ref returnedTiles);
-        if (surrounded)
-        {
-            foreach (Tile returnedTile in returnedTiles)
-            {
-                if (!surroundedGooTiles.Find(surroundedTile => surroundedTile.x == returnedTile.x && surroundedTile.y == returnedTile.y)) surroundedGooTiles.Add(returnedTile);
-            }
-        }
-        else
-        {
-            foreach (Tile returnedTile in returnedTiles)
-            {
-                if (!notSurroundedGooTiles.Find(notSurroundedTile => notSurroundedTile.x == returnedTile.x && notSurroundedTile.y == returnedTile.y)) notSurroundedGooTiles.Add(returnedTile);
-            }
-        }
-        return surrounded;
+        List<Tile> connectedTiles = new List<Tile>();
+        GetAllConnectedGooTiles(x, y, ref connectedTiles);
+        return connectedTiles;
     }
 
-    private bool TileIsGooThatIsSurrounded (int x, int y, List<Tile> checkedTiles, ref List<Tile> surroundedTiles)
+    private void GetAllConnectedGooTiles(int x, int y, ref List<Tile> connectedTiles)
     {
-        // if tile is already checked goo tile
-        if (checkedTiles.Find(checkedTile => checkedTile.x == x && checkedTile.y == y) != null) return true;
-        // if tile is already surely surrounded tile
-        if (surroundedGooTiles.Find(surroundedTile => surroundedTile.x == x && surroundedTile.y == y)) return true;
-        // if tile is already surely not a surrounded tile
-        if (notSurroundedGooTiles.Find(notSurroundedTile => notSurroundedTile.x == x && notSurroundedTile.y == y)) return false;
+        Tile tile = tiles.Find(gooTile => gooTile.x == x && gooTile.y == y && gooTile.type == TileType.Goo);
+        if (tile != null) AddTileToList(tile, ref connectedTiles);
+        if (!TileHasLeftWall(x, y)) GetAllConnectedGooTiles(x - 1, y, ref connectedTiles);
+        if (!TileHasTopLeftWall(x, y)) GetAllConnectedGooTiles(x - 1, y + 1, ref connectedTiles);
+        if (!TileHasTopRightWall(x, y)) GetAllConnectedGooTiles(x, y + 1, ref connectedTiles);
+        if (!TileHasRightWall(x, y)) GetAllConnectedGooTiles(x + 1, y, ref connectedTiles);
+        if (!TileHasBottomRightWall(x, y)) GetAllConnectedGooTiles(x + 1, y - 1, ref connectedTiles);
+        if (!TileHasBottomLeftWall(x, y)) GetAllConnectedGooTiles(x, y - 1, ref connectedTiles);
+    }
 
-        Tile tile = GetTile(x, y);
-
-        // if tile is waste return false
-        if (tile != null && tile.type == TileType.Waste) return false;
-
-        // if tile is goo check around
-        if (tile != null && tile.type == TileType.Goo)
-        {
-            if (!TileHasLeftWall(x, y))
-            {
-                checkedTiles.Add(tile);
-                if (!TileIsGooThatIsSurrounded(x - 1, y, checkedTiles, ref surroundedTiles)) return false;
-            }
-            if (!TileHasTopLeftWall(x, y))
-            {
-                checkedTiles.Add(tile);
-                if (!TileIsGooThatIsSurrounded(x - 1, y + 1, checkedTiles, ref surroundedTiles)) return false;
-            }
-            if (!TileHasTopRightWall(x, y))
-            {
-                checkedTiles.Add(tile);
-                if (!TileIsGooThatIsSurrounded(x, y + 1, checkedTiles, ref surroundedTiles)) return false;
-            }
-            if (!TileHasRightWall(x, y))
-            {
-                checkedTiles.Add(tile);
-                if (!TileIsGooThatIsSurrounded(x + 1, y, checkedTiles, ref surroundedTiles)) return false;
-            }
-            if (!TileHasBottomRightWall(x, y))
-            {
-                checkedTiles.Add(tile);
-                if (!TileIsGooThatIsSurrounded(x + 1, y - 1, checkedTiles, ref surroundedTiles)) return false;
-            }
-            if (!TileHasBottomLeftWall(x, y))
-            {
-                checkedTiles.Add(tile);
-                if (!TileIsGooThatIsSurrounded(x, y - 1, checkedTiles, ref surroundedTiles)) return false;
-            }
-            if (!surroundedTiles.Find(surroundedTile => surroundedTile.x == x && surroundedTile.y == y)) surroundedTiles.Add(tile);
-        }
-        return true;
+    private void AddTileToList (Tile tile, ref List<Tile> list)
+    {
+        if (list.Find(found => tile.x == found.x && tile.y == found.y)) return;
+        list.Add(tile);
     }
 
     public bool IsNatureTilePlayable (int x, int y)
@@ -225,13 +147,10 @@ public class Board : MonoBehaviour
 
     public bool IsNatureWallPlayable (Tile tile, WallType wallType)
     {
-        if (wallType == WallType.Vertical) return IsNatureWallPlayable(tile.x, tile.y, wallType);
-        if (wallType == WallType.Backslash) return IsNatureWallPlayable(tile.x, tile.y, wallType);
-        if (wallType == WallType.Slash) return IsNatureWallPlayable(tile.x, tile.y, wallType);
-        return false;
+        return IsNatureWallPlayable(tile.x, tile.y, wallType);
     }
 
-    private bool IsNatureWallPlayable (int x, int y, WallType wallType)
+    public bool IsNatureWallPlayable (int x, int y, WallType wallType)
     {
         // wall already exists -> not playable
         if (HasWall(x, y, wallType)) return false;
@@ -268,7 +187,7 @@ public class Board : MonoBehaviour
         }
 
         // | walls
-        if (wallType == WallType.Backslash)
+        if (wallType == WallType.Vertical)
         {
             // edge of screen -> not playable
             if (!HasTile(x, y) || !HasTile(x + 1, y)) return false;
@@ -299,7 +218,7 @@ public class Board : MonoBehaviour
         }
 
         // / walls
-        if (wallType == WallType.Backslash)
+        if (wallType == WallType.Slash)
         {
             // edge of screen -> not playable
             if (!HasTile(x, y) || !HasTile(x + 1, y - 1)) return false;
@@ -363,7 +282,7 @@ public class Board : MonoBehaviour
         if ((possibleTiles.Count) <= 2) ChangeTileType(possibleTiles[0].x, possibleTiles[0].y, TileType.Goo);
         if ((possibleTiles.Count) == 2) ChangeTileType(possibleTiles[1].x, possibleTiles[1].y, TileType.Goo);
         int index1 = random.Next(possibleTiles.Count);
-        int index2 = -1;
+        int index2;
         do
         {
             index2 = random.Next(possibleTiles.Count);
@@ -387,14 +306,18 @@ public class Board : MonoBehaviour
     private List<Tile> GooTilesThatCanExpand ()
     {
         List<Tile> returnValue = new List<Tile>();
-        foreach (Tile gooTile in notSurroundedGooTiles)
+        //        foreach (Tile tile in not)
+        foreach (Tile tile in notSurroundedGooTiles)
         {
-            if (NumberOfTilesGooCanSpread(gooTile.x, gooTile.y) >= 2) returnValue.Add(gooTile);
+            if (tile.type != TileType.Goo) continue;
+            if (NumberOfTilesGooCanSpread(tile.x, tile.y) >= 2) returnValue.Add(tile);
         }
         if (returnValue.Count > 0) return returnValue;
-        foreach (Tile gooTile in notSurroundedGooTiles)
+        //       foreach (Tile tile in tiles)
+        foreach (Tile tile in tiles)
         {
-            if (NumberOfTilesGooCanSpread(gooTile.x, gooTile.y) >= 1) returnValue.Add(gooTile);
+            if (tile.type != TileType.Goo) continue;
+            if (NumberOfTilesGooCanSpread(tile.x, tile.y) >= 1) returnValue.Add(tile);
         }
         return returnValue;
     }
@@ -402,8 +325,9 @@ public class Board : MonoBehaviour
     private List<Tile> TilesThatGooCanJumpTo ()
     {
         List<Tile> returnValue = new List<Tile>();
+        //  foreach (Tile gooTile in tiles)
         foreach (Tile gooTile in notSurroundedGooTiles)
-        {
+        { 
             List<Tile> canJumpToTiles = TilesGooCanJump(gooTile.x, gooTile.y);
             foreach (Tile canJumpToTile in canJumpToTiles)
             if (!returnValue.Find(tile => tile.x == canJumpToTile.x && tile.y == canJumpToTile.y)) returnValue.Add(canJumpToTile);
@@ -418,33 +342,33 @@ public class Board : MonoBehaviour
 
     private List<Tile> TilesGooCanSpread (int x, int y)
     {
-        Tile gooTile = notSurroundedGooTiles.Find(tile => tile.x == x && tile.y == y);
+        Tile gooTile = tiles.Find(tile => tile.x == x && tile.y == y);
         if (gooTile == null) return null;
-        List<Tile> tiles = new List<Tile>();
+        List<Tile> returnValue = new List<Tile>();
         {
-            if (TileHasLeftWall(x, y) && HasTile(x - 1, y) && GetTileTypeOnPosition(x - 1, y) == TileType.Waste) tiles.Add(GetTile(x - 1, y));
-            if (TileHasTopLeftWall(x, y) && HasTile(x - 1, y + 1) && GetTileTypeOnPosition(x - 1, y + 1) == TileType.Waste) tiles.Add(GetTile(x - 1, y + 1));
-            if (TileHasTopRightWall(x, y) && HasTile(x, y + 1) && GetTileTypeOnPosition(x, y + 1) == TileType.Waste) tiles.Add(GetTile(x, y + 1));
-            if (TileHasRightWall(x, y) && HasTile(x + 1, y) && GetTileTypeOnPosition(x + 1, y) == TileType.Waste) tiles.Add(GetTile(x + 1, y));
-            if (TileHasBottomRightWall(x, y) && HasTile(x + 1, y - 1) && GetTileTypeOnPosition(x + 1, y - 1) == TileType.Waste) tiles.Add(GetTile(x + 1, y - 1));
-            if (TileHasBottomLeftWall(x, y) && HasTile(x, y - 1) && GetTileTypeOnPosition(x, y - 1) == TileType.Waste) tiles.Add(GetTile(x, y - 1));
+            if (!TileHasLeftWall(x, y) && HasTile(x - 1, y) && GetTileTypeOnPosition(x - 1, y) == TileType.Waste) returnValue.Add(GetTile(x - 1, y));
+            if (!TileHasTopLeftWall(x, y) && HasTile(x - 1, y + 1) && GetTileTypeOnPosition(x - 1, y + 1) == TileType.Waste) returnValue.Add(GetTile(x - 1, y + 1));
+            if (!TileHasTopRightWall(x, y) && HasTile(x, y + 1) && GetTileTypeOnPosition(x, y + 1) == TileType.Waste) returnValue.Add(GetTile(x, y + 1));
+            if (!TileHasRightWall(x, y) && HasTile(x + 1, y) && GetTileTypeOnPosition(x + 1, y) == TileType.Waste) returnValue.Add(GetTile(x + 1, y));
+            if (!TileHasBottomRightWall(x, y) && HasTile(x + 1, y - 1) && GetTileTypeOnPosition(x + 1, y - 1) == TileType.Waste) returnValue.Add(GetTile(x + 1, y - 1));
+            if (!TileHasBottomLeftWall(x, y) && HasTile(x, y - 1) && GetTileTypeOnPosition(x, y - 1) == TileType.Waste) returnValue.Add(GetTile(x, y - 1));
         }
-        return tiles;
+        return returnValue;
     }
 
     private List<Tile> TilesGooCanJump (int x, int y)
     {
-        Tile gooTile = notSurroundedGooTiles.Find(tile => tile.x == x && tile.y == y);
+        Tile gooTile = tiles.Find(tile => tile.x == x && tile.y == y);
         if (gooTile == null) return null;
-        List<Tile> tiles = new List<Tile>();
+        List<Tile> returnValue = new List<Tile>();
         {
-            if (HasTile(x - 3, y) && GetTileTypeOnPosition(x - 3, y) == TileType.Waste) tiles.Add(GetTile(x - 3, y));
-            if (HasTile(x - 3, y + 3) && GetTileTypeOnPosition(x - 3, y + 3) == TileType.Waste) tiles.Add(GetTile(x - 3, y + 3));
-            if (HasTile(x, y + 3) && GetTileTypeOnPosition(x, y + 3) == TileType.Waste) tiles.Add(GetTile(x, y + 3));
-            if (HasTile(x + 3, y) && GetTileTypeOnPosition(x + 3, y) == TileType.Waste) tiles.Add(GetTile(x + 3, y));
-            if (HasTile(x + 3, y - 3) && GetTileTypeOnPosition(x + 3, y - 3) == TileType.Waste) tiles.Add(GetTile(x + 3, y - 3));
-            if (HasTile(x, y - 3) && GetTileTypeOnPosition(x, y - 3) == TileType.Waste) tiles.Add(GetTile(x, y - 3));
+            if (HasTile(x - 3, y) && GetTileTypeOnPosition(x - 3, y) == TileType.Waste) returnValue.Add(GetTile(x - 3, y));
+            if (HasTile(x - 3, y + 3) && GetTileTypeOnPosition(x - 3, y + 3) == TileType.Waste) returnValue.Add(GetTile(x - 3, y + 3));
+            if (HasTile(x, y + 3) && GetTileTypeOnPosition(x, y + 3) == TileType.Waste) returnValue.Add(GetTile(x, y + 3));
+            if (HasTile(x + 3, y) && GetTileTypeOnPosition(x + 3, y) == TileType.Waste) returnValue.Add(GetTile(x + 3, y));
+            if (HasTile(x + 3, y - 3) && GetTileTypeOnPosition(x + 3, y - 3) == TileType.Waste) returnValue.Add(GetTile(x + 3, y - 3));
+            if (HasTile(x, y - 3) && GetTileTypeOnPosition(x, y - 3) == TileType.Waste) returnValue.Add(GetTile(x, y - 3));
         }
-        return tiles;
+        return returnValue;
     }
 }

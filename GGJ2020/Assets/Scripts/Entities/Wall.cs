@@ -14,7 +14,7 @@ public class Wall : BaseObject
     private void Start()
     {
         base.Start();
-
+        SetOnMap();
         UpdateSprite();
     }
 }

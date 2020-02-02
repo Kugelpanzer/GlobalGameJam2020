@@ -39,8 +39,7 @@ public class BaseObject : MonoBehaviour
     {
         objectSpr = GetComponent<SpriteRenderer>();
 
-        gridMap.cellSize = new Vector3(objectSpr.size.x, objectSpr.size.y, 0);
-        SetOnMap();
+
         controller = GameObject.Find("Controller");
 
 
