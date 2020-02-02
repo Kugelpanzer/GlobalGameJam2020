@@ -265,7 +265,7 @@ public class Board : MonoBehaviour
         }
 
         // | walls
-        if (wallType == WallType.Backslash)
+        if (wallType == WallType.Vertical)
         {
             // edge of screen -> not playable
             if (!HasTile(x, y) || !HasTile(x + 1, y)) return false;
@@ -296,7 +296,7 @@ public class Board : MonoBehaviour
         }
 
         // / walls
-        if (wallType == WallType.Backslash)
+        if (wallType == WallType.Slash)
         {
             // edge of screen -> not playable
             if (!HasTile(x, y) || !HasTile(x + 1, y - 1)) return false;
