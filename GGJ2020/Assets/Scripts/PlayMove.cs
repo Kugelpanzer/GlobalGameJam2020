@@ -25,6 +25,7 @@ public class PlayMove : MonoBehaviour
     
     public void SetWall(Tile tile,WallType type)
     {
+		GetComponent<AudioMenager>().PlaySound("Wall");
         Wall wall=Instantiate(GetComponent<TilemapController>().wallAsset).GetComponent<Wall>();
         wall.x = tile.x;
         wall.y = tile.y;
