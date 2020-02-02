@@ -24,9 +24,35 @@ public class Board : MonoBehaviour
 
     public void AddWall (Wall wall)
     {
+        //if (wall.type == WallType.Vertical) wall.x--;
+       // if (wall.type == WallType.Backslash) wall.y--;
         walls.Add(wall);
         RecalculateSurroundedTiles();
     }
+
+   /* public void AddWall (Tile tile, WallType wallType)
+    {
+        Wall wall = new Wall();
+        if (wallType == WallType.Vertical)
+        {
+            wall.x = tile.x - 1;
+            wall.y = tile.y;
+            wall.type = wallType;
+        }
+        if (wallType == WallType.Backslash)
+        {
+            wall.x = tile.x;
+            wall.y = tile.y - 1;
+            wall.type = wallType;
+        }
+        if (wallType == WallType.Slash)
+        {
+            wall.x = tile.x;
+            wall.y = tile.y;
+            wall.type = wallType;
+        }
+        AddWall(wall);
+    }*/
 
     public void ChangeTileType (int x, int y, TileType tileType)
     {
@@ -197,7 +223,15 @@ public class Board : MonoBehaviour
         return (tiles.Find(tile => tile.x == x && tile.y == y)).type == TileType.Waste;
     }
 
-    public bool IsNatureWallPlayable (int x, int y, WallType wallType)
+    public bool IsNatureWallPlayable (Tile tile, WallType wallType)
+    {
+        if (wallType == WallType.Vertical) return IsNatureWallPlayable(tile.x - 1, tile.y, wallType);
+        if (wallType == WallType.Backslash) return IsNatureWallPlayable(tile.x, tile.y - 1, wallType);
+        if (wallType == WallType.Slash) return IsNatureWallPlayable(tile.x, tile.y, wallType);
+        return false;
+    }
+
+    private bool IsNatureWallPlayable (int x, int y, WallType wallType)
     {
         // wall already exists -> not playable
         if (HasWall(x, y, wallType)) return false;
