@@ -6,7 +6,7 @@ public class BaseObject : MonoBehaviour
 {
 
     public int x, y;
-
+    public int convX;
     protected SpriteRenderer objectSpr;
     protected GameObject controller;
     public Grid gridMap;
@@ -38,6 +38,8 @@ public class BaseObject : MonoBehaviour
         gridMap.cellSize = new Vector3(objectSpr.size.x, objectSpr.size.y, 0);
 
         SetOnMap();
+
+        convX = Converter.ConvX(x, y);
     }
 
 
