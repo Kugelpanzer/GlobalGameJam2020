@@ -58,7 +58,7 @@ public class TilemapController : MonoBehaviour
         {
             GameObject gj = Instantiate(tileAsset);
             Tile b = gj.GetComponent<Tile>();
-            b.x = Converter.ConvX(ti[i].x, ti[i].y);
+            b.x = ti[i].x;
             b.y = ti[i].y;
             b.type = ti[i].type;
             board.CreateTile(b);
