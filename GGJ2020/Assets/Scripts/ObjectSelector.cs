@@ -42,6 +42,13 @@ public class ObjectSelector : MonoBehaviour
                     Tile tile = selectedTile.GetComponent<Tile>();
                     GetComponent<PlayMove>().SetTile(tile.x, tile.y);
                 }
+                else
+                {
+                    Debug.Log(selectedTile);
+                    WallColliderScript wc= hit.collider.gameObject.GetComponent<WallColliderScript>();
+                    GetComponent<PlayMove>().SetWall(hit.collider.gameObject.transform.parent.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<Tile>(), wc.type);
+                    GetComponent<Board>().ExecuteGooMove();
+                }
 
             }
         }
@@ -60,6 +67,14 @@ public class ObjectSelector : MonoBehaviour
             {
                 //if(check color)
                 checkingObject = hit.collider.gameObject.GetComponent<ColliderCollorScript>();
+                if (GetComponent<PlayMove>().AbilityCheck(checkingObject)) allowedAsset = 1;
+                else allowedAsset = 2;
+                if (hit.collider.gameObject.transform.parent.gameObject.GetComponent<Tile>() == null && allowedAsset != 2)
+                {
+                    WallColliderScript wc = hit.collider.gameObject.GetComponent<WallColliderScript>();
+                    if (GetComponent<Board>().IsNatureWallPlayable(wc.x, wc.y, wc.type)) allowedAsset = 1;
+                    else allowedAsset = 2;
+                }
                 checkingObject.ChangeColliderColor(allowedAsset);
 
             }

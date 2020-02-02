@@ -36,8 +36,10 @@ public class Tile : BaseObject
     void Start()
     {
         base.Start();
-         controller = GameObject.Find("Controller");
+        gridMap.cellSize = new Vector3(objectSpr.size.x, objectSpr.size.y, 0);
+        SetOnMap();
         UpdateSprite();
+
 
     }
 

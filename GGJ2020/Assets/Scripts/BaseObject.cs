@@ -6,7 +6,7 @@ public class BaseObject : MonoBehaviour
 {
 
     public int x, y;
-    public int convX;
+   // public int convX;
     protected SpriteRenderer objectSpr;
     protected GameObject controller;
     public Grid gridMap;
@@ -31,15 +31,21 @@ public class BaseObject : MonoBehaviour
          }*/
     }
     // Start is called before the first frame update
+    protected void Awake()
+    {
+        gridMap = GameObject.Find("MainGrid").GetComponent<Grid>();
+    }
     protected void Start()
     {
         objectSpr = GetComponent<SpriteRenderer>();
-        gridMap = GameObject.Find("MainGrid").GetComponent<Grid>();
-        gridMap.cellSize = new Vector3(objectSpr.size.x, objectSpr.size.y, 0);
 
-        SetOnMap();
 
-        convX = Converter.ConvX(x, y);
+        controller = GameObject.Find("Controller");
+
+
+        
+
+        //convX = Converter.ConvX(x, y);
     }
 
 

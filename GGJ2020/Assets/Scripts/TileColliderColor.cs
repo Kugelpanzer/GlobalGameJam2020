@@ -19,19 +19,36 @@ public class TileColliderColor : ColliderCollorScript
         Board board = controller.GetComponent<Board>();
         Tile tile = transform.parent.gameObject.GetComponent<Tile>();
 
-        if (!board.TileHasBottomLeftTile(tile.x, tile.y))
+        WallColliderScript wc = transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.GetComponent<WallColliderScript>();
+        wc.type = WallType.Backslash;
+        wc.x = transform.parent.gameObject.GetComponent<Tile>().x;
+        wc.y = transform.parent.gameObject.GetComponent<Tile>().y;
+
+
+        wc = transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<WallColliderScript>();
+        wc.type = WallType.Vertical;
+        wc.x = transform.parent.gameObject.GetComponent<Tile>().x;
+        wc.y = transform.parent.gameObject.GetComponent<Tile>().y;
+
+        wc = transform.GetChild(2).gameObject.transform.GetChild(0).gameObject.GetComponent<WallColliderScript>();
+        wc.type = WallType.Slash;
+        wc.x = transform.parent.gameObject.GetComponent<Tile>().x;
+        wc.y = transform.parent.gameObject.GetComponent<Tile>().y;
+   
+
+        if (!board.TileHasBottomRightTile(tile.x, tile.y))
         {
             GameObject gj = transform.GetChild(2).gameObject;
             childrenList.Remove(gj.transform);
             Destroy(gj);
         }
-        if (!board.TileHasBottomRightTile(tile.x, tile.y))
+        if (!board.TileHasRightTile(tile.x, tile.y))
         {
             GameObject gj = transform.GetChild(1).gameObject;
             childrenList.Remove(gj.transform);
             Destroy(gj);
         }
-        if (!board.TileHasLeftTile(tile.x, tile.y))
+        if (!board.TileHasTopRightTile(tile.x, tile.y))
         {
             GameObject gj = transform.GetChild(0).gameObject;
             childrenList.Remove(gj.transform);
