@@ -8,6 +8,7 @@ public class ColliderCollorScript : MonoBehaviour
     public Color defaultColor;
     public Color disabledColor;
     public Color allowedColor;
+    public Color currentColor;
     protected SpriteRenderer spr;
    
     public void ChangeColliderColor(int colorCase)
@@ -17,14 +18,17 @@ public class ColliderCollorScript : MonoBehaviour
         {
             case 0:
                 spr.color = defaultColor;
+                currentColor = defaultColor;
                // ChangeColorToWalls(colorCase);
                 break;
             case 1:
                 spr.color = allowedColor;
+                currentColor = allowedColor;
                // ChangeColorToWalls(colorCase);
                 break;
             case 2:
                 spr.color = disabledColor;
+                currentColor = disabledColor;
                // ChangeColorToWalls(colorCase);
                 break;
         }
@@ -32,6 +36,7 @@ public class ColliderCollorScript : MonoBehaviour
    public void ResetColor()
     {
         spr.color = defaultColor;
+        currentColor = defaultColor;
     }
     /*private void ChangeColorToWalls(int colorCase)
     {
@@ -48,6 +53,7 @@ public class ColliderCollorScript : MonoBehaviour
         controller = GameObject.Find("Controller");
         spr = GetComponent<SpriteRenderer>();
         spr.color = defaultColor;
+        currentColor = defaultColor;
 
         /*for(int i = 0; i < transform.childCount; i++)
         {

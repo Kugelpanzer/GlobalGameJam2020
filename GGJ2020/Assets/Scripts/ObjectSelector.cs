@@ -28,28 +28,31 @@ public class ObjectSelector : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePos2D = new Vector2(mousePos.x, mousePos.y);
-
-            hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
-            if (hit.collider != null)
+            if (checkingObject != null && checkingObject.currentColor != checkingObject.disabledColor)
             {
+                mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                mousePos2D = new Vector2(mousePos.x, mousePos.y);
 
-                selectedTile = hit.collider.gameObject.transform.parent.gameObject;
-                if (hit.collider.gameObject.transform.parent.gameObject.GetComponent<Tile>() != null)
+                hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
+                if (hit.collider != null)
                 {
-                    Debug.Log(selectedTile);
-                    Tile tile = selectedTile.GetComponent<Tile>();
-                    GetComponent<PlayMove>().SetTile(tile.x, tile.y);
-                }
-                else
-                {
-                    Debug.Log(selectedTile);
-                    WallColliderScript wc= hit.collider.gameObject.GetComponent<WallColliderScript>();
-                    GetComponent<PlayMove>().SetWall(hit.collider.gameObject.transform.parent.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<Tile>(), wc.type);
-                    GetComponent<Board>().ExecuteGooMove();
-                }
 
+                    selectedTile = hit.collider.gameObject.transform.parent.gameObject;
+                    if (hit.collider.gameObject.transform.parent.gameObject.GetComponent<Tile>() != null)
+                    {
+                        Debug.Log(selectedTile);
+                        Tile tile = selectedTile.GetComponent<Tile>();
+                        GetComponent<PlayMove>().SetTile(tile.x, tile.y);
+                    }
+                    else
+                    {
+                        Debug.Log(selectedTile);
+                        WallColliderScript wc = hit.collider.gameObject.GetComponent<WallColliderScript>();
+                        GetComponent<PlayMove>().SetWall(hit.collider.gameObject.transform.parent.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<Tile>(), wc.type);
+                        GetComponent<Board>().ExecuteGooMove();
+                    }
+
+                }
             }
         }
 
