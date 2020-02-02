@@ -38,7 +38,7 @@ public class PlayMove : MonoBehaviour
 
     public void SetTile(int x,int y)
     {
-        
+       GetComponent<AudioMenager>().PlaySound("Forest"); 
        Tile tile= board.GetTile(x, y);
         if (!board.IsNatureTilePlayable(x, y)) return;
         board.ChangeTileType(x, y, TileType.Nature);
@@ -94,7 +94,7 @@ public class PlayMove : MonoBehaviour
     }
     public void AbilitySelect(Button button)//when button is clicked
     {
-
+		GetComponent<AudioMenager>().PlaySound("ClickUniversal");
         //change too buttons
         if (currentAbility == null)
         {
