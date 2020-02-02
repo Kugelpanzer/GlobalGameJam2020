@@ -127,6 +127,7 @@ MonoBehaviour:
   defaultColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 1, g: 0, b: 0, a: 0.39215687}
   allowedColor: {r: 0, g: 1, b: 0, a: 0.39215687}
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
   type: 0
   x: 0
   y: 0
@@ -257,6 +258,7 @@ MonoBehaviour:
   defaultColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 1, g: 0, b: 0, a: 0.39215687}
   allowedColor: {r: 0, g: 1, b: 0, a: 0.39215687}
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
   type: 0
   x: 0
   y: 0
@@ -648,6 +650,7 @@ MonoBehaviour:
   defaultColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 1, g: 0, b: 0, a: 0.39215687}
   allowedColor: {r: 0, g: 1, b: 0, a: 0.39215687}
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &4095297411786590943
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,8 +662,9 @@ GameObject:
   - component: {fileID: 3165626097734115544}
   - component: {fileID: 3145325485832819069}
   - component: {fileID: 6783518264897085678}
+  - component: {fileID: -3349548689045106137}
   m_Layer: 0
-  m_Name: comander hex5 1
+  m_Name: comander hex6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -747,6 +751,25 @@ MonoBehaviour:
   y: 0
   gridMap: {fileID: 0}
   type: 0
+--- !u!95 &-3349548689045106137
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4095297411786590943}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 41be80ed400687748b907e6e8fa98179, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4266220846313978851
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,6 +897,7 @@ MonoBehaviour:
   defaultColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 1, g: 0, b: 0, a: 0.39215687}
   allowedColor: {r: 0, g: 1, b: 0, a: 0.39215687}
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
   type: 0
   x: 0
   y: 0

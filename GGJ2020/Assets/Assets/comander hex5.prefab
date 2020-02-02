@@ -127,6 +127,7 @@ MonoBehaviour:
   defaultColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 1, g: 0, b: 0, a: 0.39215687}
   allowedColor: {r: 0, g: 1, b: 0, a: 0.39215687}
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
   type: 0
   x: 0
   y: 0
@@ -503,6 +504,7 @@ MonoBehaviour:
   defaultColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 1, g: 0, b: 0, a: 0.39215687}
   allowedColor: {r: 0, g: 1, b: 0, a: 0.39215687}
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
   type: 0
   x: 0
   y: 0
@@ -648,6 +650,7 @@ MonoBehaviour:
   defaultColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 1, g: 0, b: 0, a: 0.39215687}
   allowedColor: {r: 0, g: 1, b: 0, a: 0.39215687}
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &3256753568942302983
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,6 +662,7 @@ GameObject:
   - component: {fileID: 4470292637528788224}
   - component: {fileID: 4485949771271060645}
   - component: {fileID: 5459733539266743606}
+  - component: {fileID: 2587032277650987693}
   m_Layer: 0
   m_Name: comander hex5
   m_TagString: Untagged
@@ -747,6 +751,25 @@ MonoBehaviour:
   y: 0
   gridMap: {fileID: 0}
   type: 0
+--- !u!95 &2587032277650987693
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3256753568942302983}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3374201144979904059
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,6 +897,7 @@ MonoBehaviour:
   defaultColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 1, g: 0, b: 0, a: 0.39215687}
   allowedColor: {r: 0, g: 1, b: 0, a: 0.39215687}
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
   type: 0
   x: 0
   y: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tile : BaseObject
 {
-
+	Animator anim;
     public TileType type;
    /* {
         get
@@ -30,13 +30,20 @@ public class Tile : BaseObject
 
     public void UpdateSprite()
     {
-        GetComponent<SpriteRenderer>().sprite=controller.GetComponent<SpriteScript>().typeSpr[type];
+        //GetComponent<SpriteRenderer>().sprite=controller.GetComponent<SpriteScript>().typeSpr[type];
+		if(type==TileType.Nature)
+			anim.SetInteger("base int",3);
+		if(type==TileType.Goo)
+			anim.SetInteger("base int",2);
+		
     }
     // Start is called before the first frame update
     void Start()
     {
         base.Start();
         gridMap.cellSize = new Vector3(objectSpr.size.x, objectSpr.size.y, 0);
+		anim=GetComponent<Animator>();
+		//GetComponent<SpriteRenderer>().sortingOrder=-y;
         SetOnMap();
         UpdateSprite();
 
