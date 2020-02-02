@@ -225,13 +225,10 @@ public class Board : MonoBehaviour
 
     public bool IsNatureWallPlayable (Tile tile, WallType wallType)
     {
-        if (wallType == WallType.Vertical) return IsNatureWallPlayable(tile.x, tile.y, wallType);
-        if (wallType == WallType.Backslash) return IsNatureWallPlayable(tile.x, tile.y, wallType);
-        if (wallType == WallType.Slash) return IsNatureWallPlayable(tile.x, tile.y, wallType);
-        return false;
+        return IsNatureWallPlayable(tile.x, tile.y, wallType);
     }
 
-    private bool IsNatureWallPlayable (int x, int y, WallType wallType)
+    public bool IsNatureWallPlayable (int x, int y, WallType wallType)
     {
         // wall already exists -> not playable
         if (HasWall(x, y, wallType)) return false;

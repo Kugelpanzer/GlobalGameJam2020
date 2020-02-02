@@ -66,6 +66,14 @@ public class ObjectSelector : MonoBehaviour
             {
                 //if(check color)
                 checkingObject = hit.collider.gameObject.GetComponent<ColliderCollorScript>();
+                if (GetComponent<PlayMove>().AbilityCheck(checkingObject)) allowedAsset = 1;
+                else allowedAsset = 2;
+                if (hit.collider.gameObject.transform.parent.gameObject.GetComponent<Tile>() == null && allowedAsset != 2)
+                {
+                    WallColliderScript wc = hit.collider.gameObject.GetComponent<WallColliderScript>();
+                    if (GetComponent<Board>().IsNatureWallPlayable(wc.x, wc.y, wc.type)) allowedAsset = 1;
+                    else allowedAsset = 2;
+                }
                 checkingObject.ChangeColliderColor(allowedAsset);
 
             }

@@ -32,11 +32,28 @@ public class PlayMove : MonoBehaviour
         board.ChangeTileType(x, y, TileType.Nature);
         tile.UpdateSprite();
     }
+
+    public bool AbilityCheck(ColliderCollorScript cc)
+    {
+        if(cc is WallColliderScript  )
+        {
+            if (currentAbility.name == "wall")
+                return true;
+            else return false;
+            
+        }
+        else
+        {
+            if (currentAbility.name == "nature") return true;
+            else return false;
+        }
+    }
     
     // Start is called before the first frame update
     void Start()
     {
         board = GetComponent<Board>();
+        currentAbility = new Ability("wall", 1);
     }
 
     // Update is called once per frame

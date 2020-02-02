@@ -9,6 +9,6 @@ public class Ability
         this.name = name;
         this.parametar = parametar;
     }
-    string name;
-    int parametar;
+    public string name;
+    public int parametar;
 }
