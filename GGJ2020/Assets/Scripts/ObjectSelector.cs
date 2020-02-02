@@ -13,9 +13,7 @@ public class ObjectSelector : MonoBehaviour
     Vector3 mousePos;
     Vector2 mousePos2D;
     RaycastHit2D hit;
-
-    
-
+	
 
     // Start is called before the first frame update
     void Start()
@@ -30,13 +28,13 @@ public class ObjectSelector : MonoBehaviour
         {
             if (checkingObject != null && checkingObject.currentColor != checkingObject.disabledColor)
             {
+				GetComponent<AudioMenager>().PlaySound("ClickUniversal");
                 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 mousePos2D = new Vector2(mousePos.x, mousePos.y);
 
                 hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
                 if (hit.collider != null)
                 {
-
                     selectedTile = hit.collider.gameObject.transform.parent.gameObject;
                     if (hit.collider.gameObject.transform.parent.gameObject.GetComponent<Tile>() != null)
                     {
@@ -54,6 +52,10 @@ public class ObjectSelector : MonoBehaviour
 
                 }
             }
+			else 
+			{
+				GetComponent<AudioMenager>().PlaySound("ClickError");
+			}
         }
 
 
