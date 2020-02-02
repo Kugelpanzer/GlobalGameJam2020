@@ -191,11 +191,11 @@ MonoBehaviour:
   - spr: {fileID: 21300000, guid: 0bdcbfbdc2c2ea54b8765cfcdf37872e, type: 3}
     type: 2
   wallTypeToSpr:
-  - spr: {fileID: 21300000, guid: 9ec40ac0009359f4f9fab7560e6149d7, type: 3}
+  - spr: {fileID: 21300000, guid: 8dd62b7ae2f81a84ea4b96788065f1c7, type: 3}
     type: 0
-  - spr: {fileID: 21300000, guid: e417edbe86e995b4e93d06d280b2fe91, type: 3}
+  - spr: {fileID: 21300000, guid: d672e8269cf709f41b6807b884d6238e, type: 3}
     type: 1
-  - spr: {fileID: 21300000, guid: 3997ee5ff993943408ac7f1d8ca28671, type: 3}
+  - spr: {fileID: 21300000, guid: 07f943507fbb75b45a953241255b30b2, type: 3}
     type: 2
 --- !u!114 &367731355
 MonoBehaviour:
