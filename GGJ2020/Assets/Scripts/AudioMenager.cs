@@ -17,6 +17,7 @@ public class AudioMenager : MonoBehaviour
     // Start is called before the first frame update
     public void SetAllVolume()
     {
+		GetComponent<AudioSource>().Play();
         foreach (Sound s in sounds)
         {
            // s.volume = PlayerPrefs.GetFloat("SoundVolume", 1f);

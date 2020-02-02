@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 367731354}
   - component: {fileID: 367731356}
   - component: {fileID: 367731357}
+  - component: {fileID: 367731358}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -246,6 +247,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f0c695d04a148946af407d3fb65bcd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &367731358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 367731351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf0c08e9559d54944b0c4d8b0f56a353, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sl: {fileID: 0}
+  sounds:
+  - name: Background
+    clip: {fileID: 8300000, guid: 27252bd89627b5344b79fd118eddcf38, type: 3}
+    volume: 0.5
+    loop: 1
+    source: {fileID: 0}
+  - name: ClickUniversal
+    clip: {fileID: 8300000, guid: 1c860957e99c77347891ef698156c5a3, type: 3}
+    volume: 0.5
+    loop: 0
+    source: {fileID: 0}
+  - name: ClickCard
+    clip: {fileID: 8300000, guid: 8742203c1e0214a43ba1c848ee1e4e3a, type: 3}
+    volume: 0.5
+    loop: 0
+    source: {fileID: 0}
+  - name: Forest
+    clip: {fileID: 8300000, guid: 3b862ac3cf7fefb4c8356a19a55e5452, type: 3}
+    volume: 0.5
+    loop: 0
+    source: {fileID: 0}
+  - name: GameOver
+    clip: {fileID: 8300000, guid: f583f44fe80e5c64e9822c3b585ed297, type: 3}
+    volume: 0.5
+    loop: 0
+    source: {fileID: 0}
+  - name: GooUniversal
+    clip: {fileID: 8300000, guid: fc15fec9c4b2ee04585f26097d4ac50e, type: 3}
+    volume: 0.5
+    loop: 0
+    source: {fileID: 0}
+  - name: GooSpit
+    clip: {fileID: 8300000, guid: 5671802fa3e192a4da60b17c2e6e5f62, type: 3}
+    volume: 0.5
+    loop: 0
+    source: {fileID: 0}
+  - name: Wall
+    clip: {fileID: 8300000, guid: 86221699266cccb43849f968e858fb66, type: 3}
+    volume: 0.5
+    loop: 0
+    source: {fileID: 0}
+  - name: Win
+    clip: {fileID: 8300000, guid: 788dc449f6354cd4ca71e8d2abb1e023, type: 3}
+    volume: 0.5
+    loop: 0
+    source: {fileID: 0}
 --- !u!1 &1009044675
 GameObject:
   m_ObjectHideFlags: 0
