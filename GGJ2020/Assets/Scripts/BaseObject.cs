@@ -31,10 +31,14 @@ public class BaseObject : MonoBehaviour
          }*/
     }
     // Start is called before the first frame update
+    protected void Awake()
+    {
+        gridMap = GameObject.Find("MainGrid").GetComponent<Grid>();
+    }
     protected void Start()
     {
         objectSpr = GetComponent<SpriteRenderer>();
-        gridMap = GameObject.Find("MainGrid").GetComponent<Grid>();
+
         gridMap.cellSize = new Vector3(objectSpr.size.x, objectSpr.size.y, 0);
         SetOnMap();
         controller = GameObject.Find("Controller");

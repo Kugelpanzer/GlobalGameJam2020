@@ -24,8 +24,8 @@ public class Board : MonoBehaviour
 
     public void AddWall (Wall wall)
     {
-        //if (wall.type == WallType.Vertical) wall.x--;
-       // if (wall.type == WallType.Backslash) wall.y--;
+      // if (wall.type == WallType.Vertical) wall.x--;
+      // if (wall.type == WallType.Backslash) wall.y--;
         walls.Add(wall);
         RecalculateSurroundedTiles();
     }
@@ -91,13 +91,13 @@ public class Board : MonoBehaviour
         return TileType.Mountain;
     }
 
-    public bool TileHasLeftTile (int x, int y)
+    public bool TileHasRightTile (int x, int y)
     {
-        return HasTile(x - 1, y);
+        return HasTile(x + 1, y);
     }
-    public bool TileHasBottomLeftTile(int x, int y)
+    public bool TileHasTopRightTile(int x, int y)
     {
-        return HasTile(x, y - 1);
+        return HasTile(x, y + 1);
     }
     public bool TileHasBottomRightTile(int x, int y)
     {
@@ -225,8 +225,8 @@ public class Board : MonoBehaviour
 
     public bool IsNatureWallPlayable (Tile tile, WallType wallType)
     {
-        if (wallType == WallType.Vertical) return IsNatureWallPlayable(tile.x - 1, tile.y, wallType);
-        if (wallType == WallType.Backslash) return IsNatureWallPlayable(tile.x, tile.y - 1, wallType);
+        if (wallType == WallType.Vertical) return IsNatureWallPlayable(tile.x, tile.y, wallType);
+        if (wallType == WallType.Backslash) return IsNatureWallPlayable(tile.x, tile.y, wallType);
         if (wallType == WallType.Slash) return IsNatureWallPlayable(tile.x, tile.y, wallType);
         return false;
     }
