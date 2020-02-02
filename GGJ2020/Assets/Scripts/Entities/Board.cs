@@ -126,12 +126,12 @@ public class Board : MonoBehaviour
     {
         Tile tile = tiles.Find(gooTile => gooTile.x == x && gooTile.y == y && gooTile.type == TileType.Goo);
         if (tile != null) AddTileToList(tile, ref connectedTiles);
-        if (!TileHasLeftWall(x, y)) GetAllConnectedGooTiles(x - 1, y, ref connectedTiles);
+       /* if (!TileHasLeftWall(x, y)) GetAllConnectedGooTiles(x - 1, y, ref connectedTiles);
         if (!TileHasTopLeftWall(x, y)) GetAllConnectedGooTiles(x - 1, y + 1, ref connectedTiles);
         if (!TileHasTopRightWall(x, y)) GetAllConnectedGooTiles(x, y + 1, ref connectedTiles);
         if (!TileHasRightWall(x, y)) GetAllConnectedGooTiles(x + 1, y, ref connectedTiles);
         if (!TileHasBottomRightWall(x, y)) GetAllConnectedGooTiles(x + 1, y - 1, ref connectedTiles);
-        if (!TileHasBottomLeftWall(x, y)) GetAllConnectedGooTiles(x, y - 1, ref connectedTiles);
+        if (!TileHasBottomLeftWall(x, y)) GetAllConnectedGooTiles(x, y - 1, ref connectedTiles);*/
     }
 
     private void AddTileToList (Tile tile, ref List<Tile> list)

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayMove : MonoBehaviour
 {
@@ -8,7 +9,17 @@ public class PlayMove : MonoBehaviour
     Ability currentAbility;
     bool takingInput;
     Board board;
+    public int wallsLeft;
 
+    Ability firstAbility;
+    Ability secondAbility;
+
+    public Button firstButton;
+    public Button secondButton;
+    public Vector3 firstPlace;
+    public Vector3 secondPlace;
+
+    List<Button> allButtons = new List<Button>();
 
 
     
@@ -48,12 +59,73 @@ public class PlayMove : MonoBehaviour
             else return false;
         }
     }
-    
+    public void ResetAbility()
+    {
+        currentAbility = null;
+        //call goo play func
+    }
+    public void WallAbility(int wallCount)
+    {
+        if(currentAbility==null)
+            currentAbility = new Ability("wall", wallCount);
+
+    }
+    public void NatureAbility()
+    {
+        if (currentAbility == null)
+            currentAbility = new Ability("nature", 1);
+    }
+    public void AbilityUsed()
+    {
+        if (currentAbility.name == "wall" && wallsLeft > 0)
+        {
+            wallsLeft--;
+        }
+        else if (currentAbility.name == "wall" && wallsLeft <= 0)
+        {
+            ResetAbility();
+        }
+        else if (currentAbility.name == "nature")
+        {
+            ResetAbility();
+        }
+
+    }
+    public void AbilitySelect(Button button)//when button is clicked
+    {
+
+        //change too buttons
+        if (currentAbility == null)
+        {
+            Button toChange;
+            if (button == firstButton)
+            {
+                firstButton.transform.position += new Vector3(1000, 0, 0);
+                toChange = firstButton;
+                firstButton = allButtons[Random.Range(0, allButtons.Count-1)];
+                allButtons.Remove(firstButton);
+                allButtons.Add(toChange);
+                firstButton.transform.position = firstPlace;
+            }
+            else if(button == secondButton)
+            {
+                secondButton.transform.position += new Vector3(1000, 0, 0);
+                toChange = secondButton;
+                secondButton = allButtons[Random.Range(0, allButtons.Count - 1)];
+                allButtons.Remove(secondButton);
+                allButtons.Add(toChange);
+                secondButton.transform.position = secondPlace;
+            }
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         board = GetComponent<Board>();
         currentAbility = new Ability("wall", 1);
+        firstPlace = firstButton.transform.position;
+        secondPlace = secondButton.transform.position;
     }
 
     // Update is called once per frame
