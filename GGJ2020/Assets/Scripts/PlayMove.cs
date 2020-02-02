@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayMove : MonoBehaviour
 {
-
+	
     Ability currentAbility;
     bool takingInput;
     Board board;
@@ -42,7 +42,13 @@ public class PlayMove : MonoBehaviour
        Tile tile= board.GetTile(x, y);
         if (!board.IsNatureTilePlayable(x, y)) return;
         board.ChangeTileType(x, y, TileType.Nature);
-        tile.UpdateSprite();
+        //tile.UpdateSprite();
+		/*if(tile.anim.GetBool("forest1"))
+		{Debug.Log("usao");
+		tile.anim.SetInteger("Forest grass",2);}*/
+		tile.anim.SetBool("forest1",true);
+		/* bool forest1 - animacija šuma
+		forest grass, 2 */
     }
 
     public bool AbilityCheck(ColliderCollorScript cc)

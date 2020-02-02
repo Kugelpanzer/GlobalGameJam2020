@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tile : BaseObject
 {
-	Animator anim;
+	public Animator anim;
     public TileType type;
    /* {
         get
@@ -35,6 +35,8 @@ public class Tile : BaseObject
 			anim.SetInteger("base int",3);
 		if(type==TileType.Goo)
 			anim.SetInteger("base int",2);
+		if(type==TileType.Mountain)
+			anim.SetInteger("base int",1);
 		
     }
     // Start is called before the first frame update

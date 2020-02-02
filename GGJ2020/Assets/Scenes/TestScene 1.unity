@@ -287,6 +287,8 @@ MonoBehaviour:
     type: 0
   - spr: {fileID: 21300000, guid: 4ed559e64b7a0604e96aab396982825e, type: 3}
     type: 2
+  - spr: {fileID: 21300000, guid: 1eccbd8281d304046bf753544cafd2a1, type: 3}
+    type: 3
   - spr: {fileID: 21300000, guid: 9f6100da9446f294e81f23c203d9e161, type: 3}
     type: 1
 --- !u!114 &367731356
