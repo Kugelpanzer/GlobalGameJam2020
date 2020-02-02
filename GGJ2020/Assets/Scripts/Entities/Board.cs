@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    List<Tile> tiles = new List<Tile>();
+    public List<Tile> tiles = new List<Tile>();
     List<Wall> walls = new List<Wall>();
 
     List<Tile> surroundedGooTiles = new List<Tile>();
@@ -332,7 +332,9 @@ public class Board : MonoBehaviour
         if (possibleTiles.Count == 0) return false;
         System.Random random = new System.Random();
         int index = random.Next(possibleTiles.Count);
-        ChangeTileType(possibleTiles[index].x, possibleTiles[index].y, TileType.Goo);
+		/* possibleTiles[index].anim.SetBool("splat",true);
+		possibleTiles[index].anim.SetBool("spread",true); */
+		ChangeTileType(possibleTiles[index].x, possibleTiles[index].y, TileType.Goo);
         return true;
     }
 
