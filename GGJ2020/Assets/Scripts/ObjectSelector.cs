@@ -42,6 +42,12 @@ public class ObjectSelector : MonoBehaviour
                     Tile tile = selectedTile.GetComponent<Tile>();
                     GetComponent<PlayMove>().SetTile(tile.x, tile.y);
                 }
+                else
+                {
+                    Debug.Log(selectedTile);
+                    WallColliderScript wc= hit.collider.gameObject.GetComponent<WallColliderScript>();
+                    GetComponent<PlayMove>().SetWall(hit.collider.gameObject.transform.parent.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<Tile>(), wc.type);
+                }
 
             }
         }

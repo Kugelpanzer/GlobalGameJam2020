@@ -6,7 +6,7 @@ public class BaseObject : MonoBehaviour
 {
 
     public int x, y;
-    public int convX;
+   // public int convX;
     protected SpriteRenderer objectSpr;
     protected GameObject controller;
     public Grid gridMap;
@@ -36,10 +36,13 @@ public class BaseObject : MonoBehaviour
         objectSpr = GetComponent<SpriteRenderer>();
         gridMap = GameObject.Find("MainGrid").GetComponent<Grid>();
         gridMap.cellSize = new Vector3(objectSpr.size.x, objectSpr.size.y, 0);
-
         SetOnMap();
+        controller = GameObject.Find("Controller");
 
-        convX = Converter.ConvX(x, y);
+
+        
+
+        //convX = Converter.ConvX(x, y);
     }
 
 

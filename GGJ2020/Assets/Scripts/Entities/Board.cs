@@ -24,11 +24,13 @@ public class Board : MonoBehaviour
 
     public void AddWall (Wall wall)
     {
+        //if (wall.type == WallType.Vertical) wall.x--;
+       // if (wall.type == WallType.Backslash) wall.y--;
         walls.Add(wall);
         RecalculateSurroundedTiles();
     }
 
-    public void AddWall (Tile tile, WallType wallType)
+   /* public void AddWall (Tile tile, WallType wallType)
     {
         Wall wall = new Wall();
         if (wallType == WallType.Vertical)
@@ -50,7 +52,7 @@ public class Board : MonoBehaviour
             wall.type = wallType;
         }
         AddWall(wall);
-    }
+    }*/
 
     public void ChangeTileType (int x, int y, TileType tileType)
     {

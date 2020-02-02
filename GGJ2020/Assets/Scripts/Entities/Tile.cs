@@ -36,8 +36,9 @@ public class Tile : BaseObject
     void Start()
     {
         base.Start();
-         controller = GameObject.Find("Controller");
+
         UpdateSprite();
+
 
     }
 

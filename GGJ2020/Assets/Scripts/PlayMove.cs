@@ -12,14 +12,15 @@ public class PlayMove : MonoBehaviour
 
 
     
-    private void SetWall(int x,int y,WallType type)
+    public void SetWall(Tile tile,WallType type)
     {
         Wall wall=Instantiate(GetComponent<TilemapController>().wallAsset).GetComponent<Wall>();
-        wall.x = x;
-        wall.y = y;
+        wall.x = tile.x;
+        wall.y = tile.y;
         wall.type = type;
         wall.SetOnMap();
-       board.AddWall(wall);
+        board.AddWall(wall);
+      // board.AddWall(wall);
 
     }
 
