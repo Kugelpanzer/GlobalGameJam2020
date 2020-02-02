@@ -47,6 +47,7 @@ public class PlayMove : MonoBehaviour
 		{Debug.Log("usao");
 		tile.anim.SetInteger("Forest grass",2);}*/
 		tile.anim.SetBool("forest1",true);
+        GetComponent<WinLose>().VictoryCheck();
 		/* bool forest1 - animacija šuma
 		forest grass, 2 */
     }
@@ -70,6 +71,7 @@ public class PlayMove : MonoBehaviour
     {
         currentAbility = null;
         GetComponent<Board>().ExecuteGooMove();
+        GetComponent<WinLose>().LoseCheck();
         //call goo play func
     }
     public void WallAbility(int wallCount)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    List<Tile> tiles = new List<Tile>();
+    public List<Tile> tiles = new List<Tile>();
     List<Wall> walls = new List<Wall>();
 
     List<Tile> surroundedGooTiles = new List<Tile>();
