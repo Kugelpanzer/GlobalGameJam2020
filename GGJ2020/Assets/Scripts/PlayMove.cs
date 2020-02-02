@@ -19,7 +19,7 @@ public class PlayMove : MonoBehaviour
     public Vector3 firstPlace;
     public Vector3 secondPlace;
 
-    List<Button> allButtons = new List<Button>();
+    public List<Button> allButtons = new List<Button>();
 
 
     
@@ -123,7 +123,7 @@ public class PlayMove : MonoBehaviour
     void Start()
     {
         board = GetComponent<Board>();
-        currentAbility = new Ability("wall", 1);
+        //currentAbility = new Ability("wall", 1);
         firstPlace = firstButton.transform.position;
         secondPlace = secondButton.transform.position;
     }
