@@ -7,7 +7,7 @@ public class TileColliderColor : ColliderCollorScript
 
     List<Transform> childrenList = new List<Transform>();
 
-    bool first, last;
+    bool first,second, third;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,40 +18,24 @@ public class TileColliderColor : ColliderCollorScript
         }
         Board board = controller.GetComponent<Board>();
         Tile tile = transform.parent.gameObject.GetComponent<Tile>();
+
+        if (!board.TileHasBottomLeftTile(tile.x, tile.y))
+        {
+            GameObject gj = transform.GetChild(2).gameObject;
+            childrenList.Remove(gj.transform);
+            Destroy(gj);
+        }
+        if (!board.TileHasBottomRightTile(tile.x, tile.y))
+        {
+            GameObject gj = transform.GetChild(1).gameObject;
+            childrenList.Remove(gj.transform);
+            Destroy(gj);
+        }
         if (!board.TileHasLeftTile(tile.x, tile.y))
         {
             GameObject gj = transform.GetChild(0).gameObject;
             childrenList.Remove(gj.transform);
             Destroy(gj);
-            first = true;
-        }
-        if (!board.TileHasBottomRightTile(tile.x, tile.y))
-        {
-            GameObject gj = transform.GetChild(childrenList.Count-1).gameObject;
-            childrenList.Remove(gj.transform);
-            Destroy(gj);
-            last = true;
-        }
-        if (!board.TileHasBottomLeftTile(tile.x, tile.y))
-        {
-            if (first)
-            {
-                GameObject gj = transform.GetChild(0).gameObject;
-                childrenList.Remove(gj.transform);
-                Destroy(gj);
-            }
-            else if (last)
-            {
-                GameObject gj = transform.GetChild(childrenList.Count - 1).gameObject;
-                childrenList.Remove(gj.transform);
-                Destroy(gj);
-            }
-            else if(!first && !last)
-            {
-                GameObject gj = transform.GetChild(1).gameObject;
-                childrenList.Remove(gj.transform);
-                Destroy(gj);
-            }
         }
     }
 

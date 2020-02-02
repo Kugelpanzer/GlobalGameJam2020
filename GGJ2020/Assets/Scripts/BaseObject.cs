@@ -13,7 +13,7 @@ public class BaseObject : MonoBehaviour
 
     public void SetOnMap()
     {
-       transform.position = gridMap.GetCellCenterWorld(new Vector3Int(x, y, 0));
+       transform.position = gridMap.GetCellCenterWorld(new Vector3Int(Converter.ConvX(x,y), y, 0));
        // float sizex = transform.localScale.x * objectSpr.size.x ;
        //  float sizey = transform.localScale.y * objectSpr.size.y * (0.86602540378f/2f);
        //transform.position = new Vector3(sizex * x, -sizey * y);
