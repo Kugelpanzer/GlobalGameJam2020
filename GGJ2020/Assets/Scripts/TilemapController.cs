@@ -11,6 +11,8 @@ public class TilemapController : MonoBehaviour
     public GameObject tileAsset; //list that contains one of every tile asset
     public GameObject wallAsset;
 
+    Board board;
+
     [System.Serializable]
     public struct SprToType
     {
@@ -59,13 +61,14 @@ public class TilemapController : MonoBehaviour
             b.x = ti[i].x;
             b.y = ti[i].y;
             b.type = ti[i].type;
-            GetComponent<Board>().CreateTile(b);
+            board.CreateTile(b);
         }
     }
 
     // Start is called before the first frame update
     void Awake()
     {
+        board = GetComponent<Board>();
         levelLayout = mapLayout.GetComponentInChildren<Tilemap>();
         for(int i=0; i < sprToType.Length; i++)
         {
@@ -74,6 +77,7 @@ public class TilemapController : MonoBehaviour
     }
     private void Start()
     {
+
         GetAllTiles();
         GenerateMap();
     }

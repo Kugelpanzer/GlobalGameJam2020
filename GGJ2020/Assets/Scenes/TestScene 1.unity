@@ -156,7 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedTile: {fileID: 0}
   checkingObject: {fileID: 0}
-  allowedAsset: 0
+  allowedAsset: 1
 --- !u!4 &367731353
 Transform:
   m_ObjectHideFlags: 0
@@ -209,9 +209,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c2d4dc42b26834892f9f1d1570ed51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapLayout: {fileID: 2795593603755644163, guid: 4192d389afc1df2458c7fac3bcf255da,
+  mapLayout: {fileID: 2795593603755644163, guid: fcc8cbdd068402240b7c8558a8f352ad,
     type: 3}
-  tileAsset: {fileID: 3853852292081218772, guid: 10962c9114d78e54c88f79cd01f6973d,
+  tileAsset: {fileID: 3221936503498909214, guid: a4fcf7d36d98f80428323b8dd6b16438,
     type: 3}
   wallAsset: {fileID: 8693131403770888073, guid: 47313c012b2fb224088593e22a55a3f2,
     type: 3}

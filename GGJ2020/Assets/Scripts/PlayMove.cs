@@ -25,6 +25,7 @@ public class PlayMove : MonoBehaviour
 
     public void SetTile(int x,int y)
     {
+        
        Tile tile= board.GetTile(x, y);
         if (!board.IsNatureTilePlayable(x, y)) return;
         board.ChangeTileType(x, y, TileType.Nature);

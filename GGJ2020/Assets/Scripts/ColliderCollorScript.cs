@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ColliderCollorScript : MonoBehaviour
 {
-    GameObject controller;
+    protected GameObject controller;
     public Color defaultColor;
     public Color disabledColor;
     public Color allowedColor;
-    SpriteRenderer spr;
-    List<Transform> childrenList = new List<Transform>();
+    protected SpriteRenderer spr;
+   
     public void ChangeColliderColor(int colorCase)
     {
        // Debug.Log(gameObject.name);
@@ -43,7 +43,7 @@ public class ColliderCollorScript : MonoBehaviour
         }
     }*/
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         controller = GameObject.Find("Controller");
         spr = GetComponent<SpriteRenderer>();
@@ -56,7 +56,7 @@ public class ColliderCollorScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         if (controller.GetComponent<ObjectSelector>().checkingObject != this)
             ResetColor();
