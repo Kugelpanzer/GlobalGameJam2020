@@ -49,26 +49,30 @@ public class PlayMove : MonoBehaviour
     {
         if(cc is WallColliderScript  )
         {
-            if (currentAbility.name == "wall")
+            if (currentAbility!=null && currentAbility.name == "wall")
                 return true;
             else return false;
             
         }
         else
         {
-            if (currentAbility.name == "nature") return true;
+            if (currentAbility != null && currentAbility.name == "nature") return true;
             else return false;
         }
     }
     public void ResetAbility()
     {
         currentAbility = null;
+        GetComponent<Board>().ExecuteGooMove();
         //call goo play func
     }
     public void WallAbility(int wallCount)
     {
-        if(currentAbility==null)
+        if (currentAbility == null)
+        {
             currentAbility = new Ability("wall", wallCount);
+            wallsLeft = wallCount-1;
+        }
 
     }
     public void NatureAbility()
@@ -132,6 +136,19 @@ public class PlayMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(currentAbility==null)
+        {
+            GetComponent<ObjectSelector>().allowedAsset = 0;
+
+        }
+        else if(currentAbility.name=="nature")
+        {
+            GetComponent<ObjectSelector>().allowedAsset = 1;
+
+        }
+        else if (currentAbility.name == "wall")
+        {
+            GetComponent<ObjectSelector>().allowedAsset = 2;
+        }
     }
 }

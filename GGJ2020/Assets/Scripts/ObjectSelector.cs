@@ -9,6 +9,7 @@ public class ObjectSelector : MonoBehaviour
 
     public ColliderCollorScript checkingObject;
     public int allowedAsset=1;
+    PlayMove pMove;
 
     Vector3 mousePos;
     Vector2 mousePos2D;
@@ -18,7 +19,7 @@ public class ObjectSelector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        pMove=GetComponent<PlayMove>();
     }
 
     // Update is called once per frame
@@ -40,14 +41,16 @@ public class ObjectSelector : MonoBehaviour
                     {
                         Debug.Log(selectedTile);
                         Tile tile = selectedTile.GetComponent<Tile>();
+                        GetComponent<PlayMove>().AbilityUsed();
                         GetComponent<PlayMove>().SetTile(tile.x, tile.y);
                     }
                     else
                     {
                         Debug.Log(selectedTile);
                         WallColliderScript wc = hit.collider.gameObject.GetComponent<WallColliderScript>();
-                        GetComponent<PlayMove>().SetWall(hit.collider.gameObject.transform.parent.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<Tile>(), wc.type);
-                        GetComponent<Board>().ExecuteGooMove();
+                        GetComponent<PlayMove>().AbilityUsed();
+                       GetComponent<PlayMove>().SetWall(hit.collider.gameObject.transform.parent.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<Tile>(), wc.type);
+
                     }
 
                 }
