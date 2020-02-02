@@ -43,16 +43,16 @@ public class ObjectSelector : MonoBehaviour
                         Tile tile = selectedTile.GetComponent<Tile>();
                         if (GetComponent<Board>().IsNatureTilePlayable(tile.x, tile.y))
                         {
-                            GetComponent<PlayMove>().AbilityUsed();
                             GetComponent<PlayMove>().SetTile(tile.x, tile.y);
+                            GetComponent<PlayMove>().AbilityUsed();
                         }
                     }
                     else
                     {
                         Debug.Log(selectedTile);
                         WallColliderScript wc = hit.collider.gameObject.GetComponent<WallColliderScript>();
+                        GetComponent<PlayMove>().SetWall(hit.collider.gameObject.transform.parent.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<Tile>(), wc.type);
                         GetComponent<PlayMove>().AbilityUsed();
-                       GetComponent<PlayMove>().SetWall(hit.collider.gameObject.transform.parent.gameObject.transform.parent.gameObject.transform.parent.gameObject.GetComponent<Tile>(), wc.type);
 
                     }
 

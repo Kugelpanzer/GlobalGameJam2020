@@ -33,7 +33,7 @@ public class Board : MonoBehaviour
         if (tile == null) return;
         tile.type = tileType;
         tile.UpdateSprite();
-        if (tileType == TileType.Goo) RecalculateSurroundedTiles();
+        RecalculateSurroundedTiles();
     }
 
     public Tile GetTile (int x, int y)
@@ -101,20 +101,48 @@ public class Board : MonoBehaviour
     {
         surroundedGooTiles.Clear();
         notSurroundedGooTiles.Clear();
+        Debug.Log("Recalculating surrounded tiles");
         // TODO
         List<Tile> gooTiles = tiles.FindAll(tile => tile.type == TileType.Goo);
-        foreach (Tile gooTile in gooTiles)
+        bool checkedAll;
+        int numberOfPasses = 0;
+        do
         {
-            if (notSurroundedGooTiles.Find(tile => tile.x == gooTile.x && tile.y == gooTile.y)) continue;
-            List<Tile> escapeTiles = TilesGooCanSpread(gooTile.x, gooTile.y);
-            if (escapeTiles.Count > 0) notSurroundedGooTiles.AddRange(GetAllConnectedGooTiles(gooTile.x, gooTile.y));
+            checkedAll = true;
+            foreach (Tile gooTile in gooTiles)
+            {
+                if (notSurroundedGooTiles.Find(tile => tile.x == gooTile.x && tile.y == gooTile.y)) continue;
+                // List<Tile> escapeTiles = TilesGooCanSpread(gooTile.x, gooTile.y);
+                if (GooIsNotSurrounded(gooTile.x, gooTile.y))
+                {
+                    notSurroundedGooTiles.Add(gooTile);
+                    checkedAll = false;
+                }
+                // if (escapeTiles.Count > 0) notSurroundedGooTiles.AddRange(GetAllConnectedGooTiles(gooTile.x, gooTile.y));
+            }
+            Debug.Log("Pass number " + ++numberOfPasses);
         }
+        while (!checkedAll);
         foreach (Tile gooTile in gooTiles)
         {
             if (!notSurroundedGooTiles.Find(tile => tile.x == gooTile.x && tile.y == gooTile.y)) surroundedGooTiles.Add(gooTile);
         }
+        Debug.Log("Surrounded tiles: " + surroundedGooTiles.Count);
+        Debug.Log("Not surrounded tiles: " + notSurroundedGooTiles.Count);
     }
 
+    private bool GooIsNotSurrounded (int x, int y)
+    {
+        if (!TileHasLeftWall(x, y) && HasTile(x - 1, y) && (GetTileTypeOnPosition(x - 1, y) == TileType.Waste || notSurroundedGooTiles.Find(tile => tile.x == x - 1 && tile.y == y))) return true;
+        if (!TileHasTopLeftWall(x, y) && HasTile(x - 1, y + 1) && (GetTileTypeOnPosition(x - 1, y + 1) == TileType.Waste || notSurroundedGooTiles.Find(tile => tile.x == x - 1 && tile.y == y + 1))) return true;
+        if (!TileHasTopRightWall(x, y) && HasTile(x, y + 1) && (GetTileTypeOnPosition(x, y + 1) == TileType.Waste || notSurroundedGooTiles.Find(tile => tile.x == x && tile.y == y + 1))) return true;
+        if (!TileHasRightWall(x, y) && HasTile(x + 1, y) && (GetTileTypeOnPosition(x + 1, y) == TileType.Waste || notSurroundedGooTiles.Find(tile => tile.x == x + 1 && tile.y == y))) return true;
+        if (!TileHasBottomRightWall(x, y) && HasTile(x + 1, y - 1) && (GetTileTypeOnPosition(x + 1, y - 1) == TileType.Waste || notSurroundedGooTiles.Find(tile => tile.x == x + 1 && tile.y == y - 1))) return true;
+        if (!TileHasBottomLeftWall(x, y) && HasTile(x, y - 1) && (GetTileTypeOnPosition(x, y - 1) == TileType.Waste || notSurroundedGooTiles.Find(tile => tile.x == x && tile.y == y - 1))) return true;
+        return false;
+    }
+
+    /*
     private List<Tile> GetAllConnectedGooTiles(int x, int y)
     {
         List<Tile> connectedTiles = new List<Tile>();
@@ -126,13 +154,17 @@ public class Board : MonoBehaviour
     {
         Tile tile = tiles.Find(gooTile => gooTile.x == x && gooTile.y == y && gooTile.type == TileType.Goo);
         if (tile != null) AddTileToList(tile, ref connectedTiles);
-       /* if (!TileHasLeftWall(x, y)) GetAllConnectedGooTiles(x - 1, y, ref connectedTiles);
-        if (!TileHasTopLeftWall(x, y)) GetAllConnectedGooTiles(x - 1, y + 1, ref connectedTiles);
-        if (!TileHasTopRightWall(x, y)) GetAllConnectedGooTiles(x, y + 1, ref connectedTiles);
-        if (!TileHasRightWall(x, y)) GetAllConnectedGooTiles(x + 1, y, ref connectedTiles);
-        if (!TileHasBottomRightWall(x, y)) GetAllConnectedGooTiles(x + 1, y - 1, ref connectedTiles);
-        if (!TileHasBottomLeftWall(x, y)) GetAllConnectedGooTiles(x, y - 1, ref connectedTiles);*/
+        Debug.Log("Connected tiles: " + connectedTiles.Count);
+        
+        if (HasTile(x - 1, y) && !TileHasLeftWall(x, y) && !connectedTiles.Find(connectedTile => connectedTile.x == x - 1 && connectedTile.y == y)) GetAllConnectedGooTiles(x - 1, y, ref connectedTiles);
+        if (HasTile(x - 1, y + 1) && !TileHasTopLeftWall(x, y) && !connectedTiles.Find(connectedTile => connectedTile.x == x - 1 && connectedTile.y == y + 1)) GetAllConnectedGooTiles(x - 1, y + 1, ref connectedTiles);
+        if (HasTile(x, y + 1) && !TileHasTopRightWall(x, y) && !connectedTiles.Find(connectedTile => connectedTile.x == x && connectedTile.y == y + 1)) GetAllConnectedGooTiles(x, y + 1, ref connectedTiles);
+        if (HasTile(x + 1, y) && !TileHasRightWall(x, y) && !connectedTiles.Find(connectedTile => connectedTile.x == x + 1 && connectedTile.y == y)) GetAllConnectedGooTiles(x + 1, y, ref connectedTiles);
+        if (HasTile(x + 1, y - 1) && !TileHasBottomRightWall(x, y) && !connectedTiles.Find(connectedTile => connectedTile.x == x + 1 && connectedTile.y == y - 1)) GetAllConnectedGooTiles(x + 1, y - 1, ref connectedTiles);
+        if (HasTile(x, y - 1) && !TileHasBottomLeftWall(x, y) && !connectedTiles.Find(connectedTile => connectedTile.x == x && connectedTile.y == y - 1)) GetAllConnectedGooTiles(x, y - 1, ref connectedTiles);
+        
     }
+    */
 
     private void AddTileToList (Tile tile, ref List<Tile> list)
     {
@@ -254,6 +286,7 @@ public class Board : MonoBehaviour
 
     public bool ExecuteGooMove()
     {
+        Debug.Log("Goo move started");
         System.Random random = new System.Random();
         if (random.Next(6) == 0)
         {
