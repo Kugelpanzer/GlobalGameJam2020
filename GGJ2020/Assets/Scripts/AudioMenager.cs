@@ -63,7 +63,8 @@ public class AudioMenager : MonoBehaviour
     public void PlaySound(string name)
     {
         Sound currSound=Array.Find(sounds, sound => sound.name == name);
-        currSound.source.Play();
+        if(currSound!=null)
+            currSound.source.Play();
     }
     // Update is called once per frame
     void Update()
