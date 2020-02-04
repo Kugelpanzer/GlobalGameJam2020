@@ -12,8 +12,7 @@ public class WinLose : MonoBehaviour
     {
         if(tilesToWin<= board.tiles.FindAll(tileX => tileX.type == TileType.Nature).Count)
         {
-            GetComponent<AudioMenager>().PlaySound("Win");
-            GetComponent<LevelController>().GoToScene(2);
+            Victory();
         }
     }
 
@@ -24,6 +23,11 @@ public class WinLose : MonoBehaviour
             GetComponent<AudioMenager>().PlaySound("GameOver");
             GetComponent<LevelController>().GoToScene(3);
         }
+    }
+    public void Victory()
+    {
+        GetComponent<AudioMenager>().PlaySound("Win");
+        GetComponent<LevelController>().GoToScene(2);
     }
 
     // Start is called before the first frame update

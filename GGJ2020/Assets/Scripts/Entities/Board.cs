@@ -127,8 +127,12 @@ public class Board : MonoBehaviour
         {
             if (!notSurroundedGooTiles.Find(tile => tile.x == gooTile.x && tile.y == gooTile.y)) surroundedGooTiles.Add(gooTile);
         }
-        Debug.Log("Surrounded tiles: " + surroundedGooTiles.Count);
-        Debug.Log("Not surrounded tiles: " + notSurroundedGooTiles.Count);
+        if(notSurroundedGooTiles.Count==0)
+        {
+            GetComponent<WinLose>().Victory();
+        }
+       // Debug.Log("Surrounded tiles: " + surroundedGooTiles.Count);
+       // Debug.Log("Not surrounded tiles: " + notSurroundedGooTiles.Count);
     }
 
     private bool GooIsNotSurrounded (int x, int y)
@@ -306,6 +310,7 @@ public class Board : MonoBehaviour
     }
     private bool ExpandGoo()
     {
+        int iterationCounter=1000;
         List<Tile> gooTiles = GooTilesThatCanExpand();
         if (gooTiles.Count == 0) return false;
         System.Random random = new System.Random();
@@ -319,6 +324,8 @@ public class Board : MonoBehaviour
         do
         {
             index2 = random.Next(possibleTiles.Count);
+            iterationCounter--;
+            if (iterationCounter <= 0) break;
         }
         while (index1 == index2);
         ChangeTileType(possibleTiles[index1].x, possibleTiles[index1].y, TileType.Goo);
@@ -332,8 +339,6 @@ public class Board : MonoBehaviour
         if (possibleTiles.Count == 0) return false;
         System.Random random = new System.Random();
         int index = random.Next(possibleTiles.Count);
-		/* possibleTiles[index].anim.SetBool("splat",true);
-		possibleTiles[index].anim.SetBool("spread",true); */
 		ChangeTileType(possibleTiles[index].x, possibleTiles[index].y, TileType.Goo);
         return true;
     }
